@@ -27,7 +27,7 @@ def main():
             all_links_list.append(all_links)
 
             for item in all_links_list:
-                r = requests.get(url=all_links, headers=headers)
+                r = requests.get(url=item, headers=headers)
                 
                 with open(f'data/{iteration_count}.html', 'w', encoding='utf-8') as file:
                     file.write(r.text)
