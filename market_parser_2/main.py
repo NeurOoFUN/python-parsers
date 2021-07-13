@@ -38,7 +38,7 @@ def get_data():
             all_datas_list = []
             for datas in all_datas:
                 name = datas.find(class_ = 'apron_detail_top').find('h1').text
-                params = datas.find(class_ = 'apron_detail_tabs_panel').text.strip()
+                params = datas.find(class_ = 'apron_detail_tabs_panel').get_text(' ').strip()
                 all_datas_list.append(
                     {
                         'Название': name, 
@@ -48,7 +48,7 @@ def get_data():
                 with open('data/all_datas.json', 'a', encoding='utf-8') as file:
                     json.dump(all_datas_list, file, indent=4, ensure_ascii=False)
         page_count -= 1
-        print(f'Спаршено страниц: {page_count} из 24')
+        print(f'Осталось спарсить страниц: {page_count} из 24')
         if page_count == 0:
             print('Сбор данных успешно завершен!')
 
