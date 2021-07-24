@@ -2,14 +2,16 @@ import requests
 import json
 import time
 import random
+import fake_useragent
 
 from bs4 import BeautifulSoup
 
 
 def main():
+    user = fake_useragent.UserAgent().random
     url = 'https://www.ldsp-market.ru/catalog/kromochnye_materialy/kromka_mebelnaya/filter/proizvoditel-is-ecb2f6b1-33c4-11e6-80d5-00155d006309/apply/'
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.64'
+        'User-Agent': user
     }
     iteration_count = 22
     print('Идет сбор данных...')

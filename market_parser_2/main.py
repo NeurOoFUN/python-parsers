@@ -1,5 +1,6 @@
 import requests
 import json
+import fake_useragent
 
 from bs4 import BeautifulSoup
 
@@ -7,9 +8,10 @@ from bs4 import BeautifulSoup
 
 
 def get_data():
+    user = fake_useragent.UserAgent().random
     url = f'https://albico.ru/products/fartuki/'
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.67'
+        'User-Agent': user
     }
     print('Парсер запущен, идет сбор данных...')
     page_count = 24

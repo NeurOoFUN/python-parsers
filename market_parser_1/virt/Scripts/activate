@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\Programs\python_progs\parsers\virt"
+VIRTUAL_ENV="D:\Programs\python_progs\parsers\market_parser_1\virt"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
