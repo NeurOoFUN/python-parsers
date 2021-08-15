@@ -1,5 +1,4 @@
 import json
-import csv
 import math
 import requests
 import fake_useragent
@@ -8,17 +7,6 @@ import time
 
 from bs4 import BeautifulSoup
 
-
-csv_headers = [
-    'Название книги', 
-    'Ссылка на книгу', 
-    'Ссылка на постер', 
-    'Про что книга', 
-    'Описание товара', 
-    'Цена товара', 
-    'Наличие на складе', 
-    'Скидка',
-]
 
 start_time = time.time()
 
@@ -33,9 +21,6 @@ class Parser:
         }
         if not os.path.exists('data'):
             os.mkdir('data')
-
-        if not os.path.exists('data/csv_datas'):
-            os.mkdir('data/csv_datas')
 
 
     def main(self):
@@ -58,7 +43,6 @@ class Parser:
             books_count = 0
             for all_links in link:
                 self.all_books_list = []
-                self.csv_datas = []
                 book = 'https://book24.ru' + all_links.find('a').get('href')
                 all_links_list.append(book)
                 req = self.session.get(url=book)
@@ -113,34 +97,13 @@ class Parser:
                         }
                     )
                     self.save_to_json()
-                    self.csv_datas.append(
-                    [
-                        name, 
-                        book, 
-                        img_link, 
-                        about_the_book, 
-                        mod_characteristics, 
-                        price, 
-                        presence, 
-                        discount,
-                    ]
-                )
                     time.sleep(0.3)
-                    self.save_to_csv()
                     books_count += 1
                     print(f'Обрабатывается страница № {self.pagenation_count} / 6265 \n Товар № {books_count} / 30')
 
     def save_to_json(self):
         with open('data/books.json', 'a', encoding='utf-8') as file:
             json.dump(self.all_books_list, file, indent=4, ensure_ascii=False)
-
-    def save_to_csv(self):
-        with open(f'data/csv_datas/csv_file № {self.pagenation_count}.csv', 'w', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(csv_headers)
-        with open(f'data/csv_datas/csv_file № {self.pagenation_count}.csv', 'a', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(self.csv_datas)
 
 
 if __name__ == '__main__':
