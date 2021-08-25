@@ -215,16 +215,16 @@ class Parser:
         response = self.session.get(url=all_product_modification_links).text
         soup = BeautifulSoup(response, 'lxml')
         # Ссылки на изображения.
-        img = soup.find('div', class_ = 'col-xs-12 col-sm-12 col-lg-12').find_all('a')
+        self.img_link_list = []
+        img = soup.find('div', class_ = 'thumbnails slider-main').find_all('img')
         for item in img:
-            self.img_link = item.get('href')
-            print(self.img_link)
+            img_link = item.get('src')
+            self.img_link_list.append(img_link)
         # Имя модификации товара.
         try:
             self.name = soup.find('h1', itemprop = 'name').get_text().strip()
         except:
             self.name = 'Название не указано.'
-        # Ссылки на изображения.
         # ID модимикации товара.
         try:
             self.id = soup.find('div', class_ = 'prodmodeL').get_text().split('ID товара:')[1].strip()
@@ -386,55 +386,55 @@ class Parser:
             self.galvanic_isolation = soup.find('td', text = re.compile('Наличие гальванической развязки')).find_next_sibling().get_text().strip()
         except:
             self.galvanic_isolation = 'Информация о наличии гальванической развязки не указана.'
-        # self.save_datas_to_csv()
-        # print(f'Этап обработки:\nКатегория --  {self.category_name}\nТовар -- {self.product_name}\nМодификация -- {self.name}')
+        self.save_datas_to_csv()
+        print(f'Этап обработки:\nКатегория --  {self.category_name}\nТовар -- {self.product_name}\nМодификация -- {self.name}')
 
 
 
-    # def save_datas_to_csv(self):
-    #     """
-    #     Запись данных в csv файл.
-    #     """
-    #     with open('data/all_data_table.csv', 'a', encoding='utf-8') as file:
-    #         writer = csv.writer(file)
-    #         writer.writerow((
-    #             self.category_name, 
-    #             self.product_name, 
-    #             'Ссылка на картинку', 
-    #             self.name, 
-    #             self.id, 
-    #             self.description, 
-    #             self.light_flow, 
-    #             self.power, 
-    #             self.colour_temp, 
-    #             self.brightness_angle, 
-    #             self.luminous_type, 
-    #             self.diffuser_type, 
-    #             self.ripple_factor, 
-    #             self.color_rendering_index, 
-    #             self.manufacturer, 
-    #             self.voltage, 
-    #             self.power_factor, 
-    #             self.type_of_food, 
-    #             self.voltage_frequency, 
-    #             self.protection_class, 
-    #             self.operating_temp, 
-    #             self.dust_protection, 
-    #             self.climatic_performance, 
-    #             self.installation_height, 
-    #             self. lamp_life, 
-    #             self.led_life, 
-    #             self.guarantee_period, 
-    #             self.size, 
-    #             self.weight, 
-    #             self.mount_type, 
-    #             self.body_material, 
-    #             self.diffuser_material, 
-    #             self.galvanic_isolation, 
-    #             self.rrc, 
-    #             self.mrc, 
-    #             self.you_prace
-    #         ))
+    def save_datas_to_csv(self):
+        """
+        Запись данных в csv файл.
+        """
+        with open('data/all_data_table.csv', 'a', encoding='utf-8') as file:
+            writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
+            writer.writerow((
+                self.category_name, 
+                self.product_name, 
+                str(self.img_link_list).replace(',', '\n').replace('[', '').replace(']', '').replace("'", ''), 
+                self.name, 
+                self.id, 
+                self.description, 
+                self.light_flow, 
+                self.power, 
+                self.colour_temp, 
+                self.brightness_angle, 
+                self.luminous_type, 
+                self.diffuser_type, 
+                self.ripple_factor, 
+                self.color_rendering_index, 
+                self.manufacturer, 
+                self.voltage, 
+                self.power_factor, 
+                self.type_of_food, 
+                self.voltage_frequency, 
+                self.protection_class, 
+                self.operating_temp, 
+                self.dust_protection, 
+                self.climatic_performance, 
+                self.installation_height, 
+                self. lamp_life, 
+                self.led_life, 
+                self.guarantee_period, 
+                self.size, 
+                self.weight, 
+                self.mount_type, 
+                self.body_material, 
+                self.diffuser_material, 
+                self.galvanic_isolation, 
+                self.rrc, 
+                self.mrc, 
+                self.you_prace
+            ))
 
 
 

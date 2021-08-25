@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from openpyxl import Workbook
 
 
 csv_headers = (
@@ -51,7 +52,7 @@ class Parser:
         Запись кода в HTML файл.
         """
         try:
-            print('Скрипт запущен.\nПрежде чем начать сбор данных, нужно собрать динамически подгружаемые ссылки, это займет не более минуты...')
+            print('Скрипт запущен...\nПрежде чем начать сбор данных, нужно собрать динамически подгружаемые ссылки...\nЭто займет 1-5 минут, зависит от текущей нагрузки на сайт...')
             self.driver.get('http://japanparcel.com/catalogv2/Audio__video_equipment/Amplifiers')
             page = self.driver.find_element_by_tag_name('html')
             page.send_keys(Keys.END)
@@ -145,9 +146,22 @@ class Parser:
             ))
 
 
+    def convert_csv_to_excel(self):
+        """
+        Конвертирует CSV файл в XLSX, оставляя при этом и то и то.
+        """
+        wb = Workbook()
+        ws = wb.active
+        with open(f'data/all_data.csv', 'r', encoding='utf-8') as file:
+            for row in csv.reader(file):
+                ws.append(row)
+        wb.save(f'data/all_data.xlsx')
+
+
     def run(self):
         self.get_fool_page()
         self.get_all_links()
+        self.convert_csv_to_excel()
 
 
 if __name__ == '__main__':
