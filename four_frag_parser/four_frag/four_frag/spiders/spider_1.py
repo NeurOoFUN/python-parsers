@@ -28,12 +28,14 @@ class Spider1Spider(scrapy.Spider):
         """
         category_urls = response.xpath('//li[@class="dropdown-submenu"]/a/@href').getall()
         for urls in category_urls:
-            yield response.follow(urls, self.parse_product_links)
-        last_page = response.xpath('//div[@class="col-pager"]/a/@href').getall()[-1].split('=')[1]
-        if last_page is not None:
-            for i in range(1, int(last_page) + 1):
-                page = urls + f'?page={i}'
-                yield response.follow(page, self.parse_product_links)
+            yield response.follow(urls, self.pagenation)
+
+
+    def pagenation(self, response):
+        pages_count = response.xpath('//div[@class="col-pager"]/a/@href').getall()[-1].split('=')[1]
+        for i in range(1, int(pages_count) + 1):
+            url = response.url + f'?page={i}'
+            yield response.follow(url, self.parse_product_links)
 
 
     def parse_product_links(self, response):
@@ -45,8 +47,12 @@ class Spider1Spider(scrapy.Spider):
 
     def parse(self, response):
         item = FourFragItem()
+        item['category_name'] = response.xpath('//li[@class="dropdown-submenu"]/a/span/text()'.strip()).getall()
         item['url'] = response.url
         item['name'] = response.xpath('//h1[@itemprop="name"]/text()').getall()
         item['price'] = response.xpath('//div[@class="panel-body prices product-info"]//span[@class="item-price"]/text()').getall()
         item['img_link'] = response.xpath('//div[@class="image-inner"]//a[@class="thumbnail"]/img/@src').get()
+        item['manufacturer'] = response.xpath('//div[@class="col-xs-60 blockshortinfo"]/strong/text()').get()
+        item['specifications'] = response.xpath('//table[@class="table table-striped table-hover"]/tbody/tr/th/text()'.strip()).getall()
         yield item
+

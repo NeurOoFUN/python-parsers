@@ -6,7 +6,7 @@ BOT_NAME = 'four_frag'
 SPIDER_MODULES = ['four_frag.spiders']
 NEWSPIDER_MODULE = 'four_frag.spiders'
 FEED_EXPORT_ENCODING = 'utf-8'
-FEED_EXPORT_FIELDS = ['url', 'name', 'price', 'img_link']
+FEED_EXPORT_FIELDS = ['category_name', 'url', 'name', 'price', 'img_link', 'manufacturer', 'specifications']
 FEED_FORMAT = 'csv'
 FEED_URI = 'datas.csv'
 
@@ -29,7 +29,7 @@ ROBOTSTXT_OBEY = True
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
