@@ -14,44 +14,43 @@ from authorization_datas import account_login, account_password
 print('СКРИПТ ЗАПУЩЕН.\nСЕЙЧАС НАЧНЕТСЯ СБОР ДАННЫХ.\nЭТО ЗАЙМЕТ ВРЕМЯ...')
 
 csv_headers = (
-    'Категория', 
-    'Подкатегория', 
-    'Ссылки на изображения', 
-    'Название', 
-    'Артикул (id товара)', 
-    'Описание', 
-    'Световой поток', 
-    'Мощность', 
-    'Цветовая температура', 
-    'Двойной угол половинной яркости', 
-    'Тип кривой силы света', 
-    'Тип рассеивателя', 
-    'Коэф. пульсации', 
-    'Индекс цветопередачи', 
-    'Производитель светодиодов', 
-    'Напряжение питания', 
-    'Коэффициент мощности', 
-    'Тип питания', 
-    'Частота напряжения', 
-    'Класс защиты', 
-    'Температура эксплуатации', 
-    'Степень защиты от пыли и влаги', 
-    'Климатическое исполнение', 
-    'Рекомендуемая высота установки', 
-    'Срок службы светильника', 
-    'Срок службы светодиодов', 
-    'Гарантийный срок', 
-    'Габаритные размеры', 
-    'Масса', 
-    'Тип крепления', 
-    'Материал корпуса', 
-    'Материал рассеивателя', 
-    'Наличие гальванической развязки', 
-    'РРЦ (рекомендуемая цена)', 
-    'МРЦ (минимальная розничная цена)', 
-    'наша цена (партнерская)'
+    'Категория',
+    'Подкатегория',
+    'Ссылки на изображения',
+    'Название',
+    'Артикул (id товара)',
+    'Описание',
+    'Световой поток',
+    'Мощность',
+    'Цветовая температура',
+    'Двойной угол половинной яркости',
+    'Тип кривой силы света',
+    'Тип рассеивателя',
+    'Коэф. пульсации',
+    'Индекс цветопередачи',
+    'Производитель светодиодов',
+    'Напряжение питания',
+    'Коэффициент мощности',
+    'Тип питания',
+    'Частота напряжения',
+    'Класс защиты',
+    'Температура эксплуатации',
+    'Степень защиты от пыли и влаги',
+    'Климатическое исполнение',
+    'Рекомендуемая высота установки',
+    'Срок службы светильника',
+    'Срок службы светодиодов',
+    'Гарантийный срок',
+    'Габаритные размеры',
+    'Масса',
+    'Тип крепления',
+    'Материал корпуса',
+    'Материал рассеивателя',
+    'Наличие гальванической развязки',
+    'РРЦ (рекомендуемая цена)',
+    'МРЦ (минимальная розничная цена)',
+    'наша цена (партнерская)',
 )
-
 
 
 class Parser:
@@ -67,7 +66,7 @@ class Parser:
         self.driver = webdriver.Chrome(executable_path=r'D:\Programs\python_progs\parsers\market_parser_4\chromedriver.exe', options=options)
         self.session = requests.Session()
         self.session.headers = {
-            'user-agent': f'{self.useragent}', 
+            'user-agent': f'{self.useragent}',
             'Accept': '*/*'
         }
         # Авторизация на сайте.
@@ -87,7 +86,7 @@ class Parser:
             # Ввод.
             password.send_keys(Keys.ENTER)
             self.driver.implicitly_wait(10)
-            #Получаем cookies
+            # Получаем cookies
             pickle.dump(self.driver.get_cookies(), open('cookies', 'wb'))
         except Exception as ex:
             print(ex)
@@ -101,7 +100,6 @@ class Parser:
         with open('data/all_data_table.csv', 'w', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow(csv_headers)
-
 
     def get_start_category_pages(self):
         """
@@ -119,7 +117,6 @@ class Parser:
         for all_start_category_links in start_category_pages_list:
             self.get_subcategory_pages(all_start_category_links)
 
-
     def get_subcategory_pages(self, all_start_category_links):
         """
         Принемает ссылки из функции 'get_start_category_pages'.
@@ -135,7 +132,6 @@ class Parser:
             category_links_list.append(link)
             for all_category_links in category_links_list:
                 self.get_product_links(all_category_links)
-
 
     def get_product_links(self, all_category_links):
         """
@@ -153,10 +149,9 @@ class Parser:
         for all_product_links in all_product_links_list:
             self.get_pagenation_from_modifications(all_product_links)
 
-
     def get_pagenation_from_modifications(self, all_product_links):
         """
-        Тут пагенация страниц модификаций товара если есть, 
+        Тут пагенация страниц модификаций товара если есть,
         и сбор описания товара.
         Если страница одна, ссылка просто летит дальше.
         """
@@ -172,8 +167,6 @@ class Parser:
                 self.get_data_from_product(processed_links)
         else:
             self.get_data_from_product(all_product_links)
-
-
 
     def get_data_from_product(self, processed_links):
         """
@@ -206,7 +199,6 @@ class Parser:
         for all_product_modification_links in product_modification_links_list:
             self.get_all_datas_from_products(all_product_modification_links)
 
-
     def get_all_datas_from_products(self, all_product_modification_links):
         """
         Парсинг всех необходимых данных со страниц модификаций.
@@ -222,7 +214,7 @@ class Parser:
         # Имя модификации товара.
         try:
             self.name = soup.find('h1', itemprop = 'name').get_text().strip()
-        except:
+        except BaseException:
             self.name = 'Название не указано.'
         # ID модимикации товара.
         try:
@@ -312,7 +304,7 @@ class Parser:
             self.type_of_food = 'Информация о типе питания не указана.'
         # 13.Частота напряжения электропитания, [Гц].
         try:
-            self.voltage_frequency =  soup.find('td', text = re.compile('Частота напряжения электропитания')).find_next_sibling().get_text().strip()
+            self.voltage_frequency = soup.find('td', text = re.compile('Частота напряжения электропитания')).find_next_sibling().get_text().strip()
         except:
             self.voltage_frequency = 'Информация о частоте напряжения не указана.'
         # 14.Класс защиты от поражения электрическим током (по ГОСТ Р МЭК 60598-1-2011)
@@ -388,8 +380,6 @@ class Parser:
         self.save_datas_to_csv()
         print(f'Этап обработки:\nКатегория --  {self.category_name}\nТовар -- {self.product_name}\nМодификация -- {self.name}')
 
-
-
     def save_datas_to_csv(self):
         """
         Запись данных в csv файл.
@@ -397,45 +387,43 @@ class Parser:
         with open('data/all_data_table.csv', 'a', encoding='utf-8') as file:
             writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
             writer.writerow((
-                self.category_name, 
-                self.product_name, 
-                str(self.img_link_list).replace(',', '\n').replace('[', '').replace(']', '').replace("'", ''), 
-                self.name, 
-                self.id, 
-                self.description, 
-                self.light_flow, 
-                self.power, 
-                self.colour_temp, 
-                self.brightness_angle, 
-                self.luminous_type, 
-                self.diffuser_type, 
-                self.ripple_factor, 
-                self.color_rendering_index, 
-                self.manufacturer, 
-                self.voltage, 
-                self.power_factor, 
-                self.type_of_food, 
-                self.voltage_frequency, 
-                self.protection_class, 
-                self.operating_temp, 
-                self.dust_protection, 
-                self.climatic_performance, 
-                self.installation_height, 
-                self. lamp_life, 
-                self.led_life, 
-                self.guarantee_period, 
-                self.size, 
-                self.weight, 
-                self.mount_type, 
-                self.body_material, 
-                self.diffuser_material, 
-                self.galvanic_isolation, 
-                self.rrc, 
-                self.mrc, 
+                self.category_name,
+                self.product_name,
+                str(self.img_link_list).replace(',', '\n').replace('[', '').replace(']', '').replace("'", ''),
+                self.name,
+                self.id,
+                self.description,
+                self.light_flow,
+                self.power,
+                self.colour_temp,
+                self.brightness_angle,
+                self.luminous_type,
+                self.diffuser_type,
+                self.ripple_factor,
+                self.color_rendering_index,
+                self.manufacturer,
+                self.voltage,
+                self.power_factor,
+                self.type_of_food,
+                self.voltage_frequency,
+                self.protection_class,
+                self.operating_temp,
+                self.dust_protection,
+                self.climatic_performance,
+                self.installation_height,
+                self. lamp_life,
+                self.led_life,
+                self.guarantee_period,
+                self.size,
+                self.weight,
+                self.mount_type,
+                self.body_material,
+                self.diffuser_material,
+                self.galvanic_isolation,
+                self.rrc,
+                self.mrc,
                 self.you_prace
             ))
-
-
 
 
 if __name__ == '__main__':

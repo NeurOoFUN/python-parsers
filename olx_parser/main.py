@@ -8,20 +8,20 @@ from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 
 csv_headers = (
-    'Заголовок', 
-    'Описание', 
-    'Фото', 
+    'Заголовок',
+    'Описание',
+    'Фото',
     'Тип недвижимости',
-    'Цена', 
-    'Этаж', 
-    'Этажность', 
+    'Цена',
+    'Этаж',
+    'Этажность',
     'Адрес',
-    'Кол-во комнат', 
-    'Площадь', 
-    'Имя собственника', 
-    'Номер телефона', 
-    'Ссылка на объявление', 
-    'Дата публикации', 
+    'Кол-во комнат',
+    'Площадь',
+    'Имя собственника',
+    'Номер телефона',
+    'Ссылка на объявление',
+    'Дата публикации',
     'ID'
 )
 
@@ -34,9 +34,9 @@ class Parser:
         self.useragent = UserAgent()
         self.session = requests.Session()
         self.session.headers = {
-            'user-agent': f'{self.useragent}', 
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 
-            'accept-language': 'ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7', 
+            'user-agent': f'{self.useragent}',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'accept-language': 'ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7',
             'accept-encoding': 'gzip, deflate, br'
         }
         if not os.path.exists('data'):
@@ -44,8 +44,6 @@ class Parser:
         with open('data/csv_table.csv', 'w', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow(csv_headers)
-
-
 
     def get_start_category_links(self):
         """
@@ -61,7 +59,6 @@ class Parser:
             all_start_category_links_list.append(start_category_links)
             self.get_pagenation(start_category_links)
 
-
     def get_pagenation(self, start_category_links):
         """
         Отвечает за пагенацию страниц.
@@ -72,7 +69,6 @@ class Parser:
         for i in range(1, int(last_page) + 1):
             pagen_links = start_category_links + f'?page={i}'
             self.get_all_ad(pagen_links)
-
 
     def get_all_ad(self, pagen_links):
         """
@@ -87,7 +83,6 @@ class Parser:
             self.ads_address = item.find_all('small', class_ = 'breadcrumb x-normal')[1].get_text().strip()
             all_ads_links_list.append(self.ads_links)
             self.get_all_datas(self.ads_links)
-
 
     def get_all_datas(self, ads_links):
         response = self.session.get(url=ads_links).text
@@ -154,7 +149,6 @@ class Parser:
         # НЕ ЗАБЫТЬ!!!
         self.save_to_csv()
 
-
     def save_to_csv(self):
         """
         Пишет данные в CSV.
@@ -162,30 +156,25 @@ class Parser:
         with open('data/csv_table.csv', 'a', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow((
-                self.ads_title, 
-                self.description, 
-                self.img, 
-                self.start_category_names, 
-                self.price, 
-                self.floor, 
-                self.number_of_storeys, 
-                self.ads_address, 
-                self.rooms_of_numbers, 
-                self.square, 
-                self.name, 
-                '_____________', 
-                self.ads_links, 
-                self.date, 
+                self.ads_title,
+                self.description,
+                self.img,
+                self.start_category_names,
+                self.price,
+                self.floor,
+                self.number_of_storeys,
+                self.ads_address,
+                self.rooms_of_numbers,
+                self.square,
+                self.name,
+                '_____________',
+                self.ads_links,
+                self.date,
                 self.id
             ))
 
-
-
-
     def run(self):
         self.get_start_category_links()
-
-
 
 
 if __name__ == '__main__':

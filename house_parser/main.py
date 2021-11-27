@@ -9,10 +9,10 @@ from openpyxl import Workbook
 
 
 csv_headers = (
-    'Имя категории', 
-    'Объявление', 
-    'Ссылка на объявление', 
-    'Автор объявления', 
+    'Имя категории',
+    'Объявление',
+    'Ссылка на объявление',
+    'Автор объявления',
     'Номер телефона'
 )
 
@@ -26,8 +26,8 @@ class Parser:
         self.useragent = UserAgent().random
         self.session = requests.Session()
         self.session.headers = {
-            'user-agent': f'{self.useragent}', 
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 
+            'user-agent': f'{self.useragent}',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'accept-language': 'ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
         }
         if not os.path.exists('data'):
@@ -35,8 +35,6 @@ class Parser:
         with open(f'data/CSV_table_to_{self.input_url}_.csv', 'w', encoding='utf-8') as file:
             writer = csv.writer(file, dialect='excel', quoting=csv.QUOTE_MINIMAL)
             writer.writerow(csv_headers)
-
-
 
     def get_start_links(self):
         """
@@ -54,8 +52,6 @@ class Parser:
             self.start_category_names = item.find('a', class_ = 'site-map-item__link').get_text().strip()
             all_start_links_list.append(all_start_links)
             self.get_links_to_products(all_start_links)
-
-
 
     def get_links_to_products(self, pagen_links):
         """
@@ -83,9 +79,8 @@ class Parser:
                     all_product_links_list.append(self.all_product_links)
                     self.all_datad_from_pcoduct(self.all_product_links)
             self.i += 1
-            if soup.find('span', text = re.compile('Следующая')) == None:
+            if soup.find('span', text = re.compile('Следующая')) is None:
                 break
-
 
     def all_datad_from_pcoduct(self, all_product_links):
         """
@@ -121,7 +116,6 @@ class Parser:
             phone = 'Номер телефона не указан.'
         self.save_to_csv()
 
-
     def save_to_csv(self):
         """
         Пишет все собраные данные в таблицу CSV формата.
@@ -130,14 +124,13 @@ class Parser:
             writer = csv.writer(file, dialect='excel', quoting=csv.QUOTE_MINIMAL)
             writer.writerow(
                 (
-                    self.start_category_names, 
-                    self.product_name, 
-                    self.all_product_links, 
-                    self.author_type, 
-                    str(self.all_phone_list).replace('[', '').replace(']', '').replace("'", ''), 
+                    self.start_category_names,
+                    self.product_name,
+                    self.all_product_links,
+                    self.author_type,
+                    str(self.all_phone_list).replace('[', '').replace(']', '').replace("'", ''),
                 )
             )
-
 
     def convert_csv_to_excel(self):
         """
@@ -149,8 +142,6 @@ class Parser:
             for row in csv.reader(file):
                 ws.append(row)
         wb.save(f'data/EXCEL_table_to_{self.input_url}_.xlsx')
-
-
 
     def run(self):
         """
@@ -165,8 +156,6 @@ class Parser:
             print('Произошла ошибка!!!\nЛибо данного города на сайте нет, либо вы не правельно написали название города.\nПопробуйте еще раз.')
             parser = Parser()
             parser.run()
-
-
 
 
 if __name__ == '__main__':

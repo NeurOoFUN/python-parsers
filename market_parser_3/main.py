@@ -7,6 +7,8 @@ import math
 from bs4 import BeautifulSoup
 
 start_time = time.time()
+
+
 def get_data():
     print('Начался сбор данных, это займет какое-то время...')
     iteration_count = 320
@@ -14,11 +16,11 @@ def get_data():
         user = fake_useragent.UserAgent().random
         url = 'https://www.kolesa-darom.ru/catalog/avto/shiny/nav/'
         headers = {
-            'User-Agent': user, 
+            'User-Agent': user,
             'Accept': '*/*'
         }
         response = requests.get(url=url + f'page-{i}/', headers=headers)
-        
+
         with open('data/start_page.html', 'w', encoding='utf-8') as file:
             file.write(response.text)
         with open('data/start_page.html', encoding='utf-8') as file:
@@ -32,7 +34,7 @@ def get_data():
             all_links = 'https://www.kolesa-darom.ru' + link.find(class_ = 'product-card__image').find('a').get('href')
             presence = link.find('span', class_ = 'product-availability__text').get_text().strip()
             all_links_list.append(all_links)
-            
+
             # Запись каждой страницы в html фаил.
             req = requests.get(url=all_links, headers=headers)
             with open('data/pages.html', 'w', encoding='utf-8') as file:
@@ -48,7 +50,7 @@ def get_data():
                     code = all_datas.find(class_ = 'product-code').text.strip().split('Код: ')[1]
                 except:
                     code = 'Код товара не указан.'
-                
+
                 try:
                     price = all_datas.find(class_ = 'product-price').find('span').text.strip() + ' Руб'
                 except:
@@ -64,12 +66,12 @@ def get_data():
                     mod_text = ' '.join(text)
                     all_datas_list.append(mod_text.strip())
                 all_datas_list.append({
-                        'Наличие товара': presence, 
-                        'Код товара': code, 
-                        'Цена товара': price, 
-                        'Ссылка на изображение': img, 
-                        'Ссылка на товар': all_links
-                    })
+                    'Наличие товара': presence,
+                    'Код товара': code,
+                    'Цена товара': price,
+                    'Ссылка на изображение': img,
+                    'Ссылка на товар': all_links
+                })
                 with open('data/json_datas.json', 'a', encoding='utf-8') as file:
                     json.dump(all_datas_list, file, indent=4, ensure_ascii=False)
         iteration_count -= 1
@@ -78,11 +80,12 @@ def get_data():
             print('Сбор данных завершен.')
 
 
-
 def main():
     get_data()
     finish_time = time.time() - start_time
     math_time = math.floor(finish_time)
     print(f'Затраченое время: {math_time} секунд.')
+
+
 if __name__ == '__main__':
     main()

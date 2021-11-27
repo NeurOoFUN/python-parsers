@@ -12,11 +12,11 @@ from openpyxl import Workbook
 
 
 csv_headers = (
-    'Lot_name', 
-    'Lot_link', 
-    'Current_price', 
-    'Buy_now_price', 
-    'Start_time', 
+    'Lot_name',
+    'Lot_link',
+    'Current_price',
+    'Buy_now_price',
+    'Start_time',
     'End_time'
 )
 
@@ -29,7 +29,7 @@ class Parser:
         self.useragent = UserAgent().random
         self.session = requests.Session()
         self.session.headers = {
-            'user-agent': f'{self.useragent}', 
+            'user-agent': f'{self.useragent}',
             'accept': 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
         }
         options = self.options = webdriver.ChromeOptions()
@@ -37,13 +37,12 @@ class Parser:
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
         options.add_argument('--headless')
         options.add_argument('--disable-blink-features=AutomationControlled')
-        self.driver = webdriver.Chrome(executable_path=r'D:\Programs\python_progs\parsers\radio_items_parser\chromedriver.exe', options=options)
+        self.driver = webdriver.Chrome(executable_path=r'/home/neuroo/github/python-parsers/radio_items_parser/chromedriver', options=options)
         if not os.path.exists('data'):
             os.mkdir('data')
         with open('data/all_data.csv', 'w', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow(csv_headers)
-
 
     def get_fool_page(self):
         """
@@ -76,7 +75,6 @@ class Parser:
             self.driver.close()
             self.driver.quit()
 
-
     def get_all_links(self):
         """
         Чтение ссылок из HTML файла.
@@ -92,7 +90,6 @@ class Parser:
             self.all_links = 'http://japanparcel.com' + item.find('a').get('href')
             all_links_list.append(self.all_links)
             self.get_datas_from_lots(self.all_links)
-
 
     def get_datas_from_lots(self, links):
         """
@@ -129,7 +126,6 @@ class Parser:
         print(f'Обрабатывается лот: {self.link_count} из {len(self.links)}')
         self.save_to_csv()
 
-
     def save_to_csv(self):
         """
         Запись полученых данных в таблицу CSV формата.
@@ -137,14 +133,13 @@ class Parser:
         with open('data/all_data.csv', 'a', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow((
-                self.lot_name, 
-                self.all_links, 
-                self.current_price, 
-                self.buy_now_price, 
-                self.start_time, 
+                self.lot_name,
+                self.all_links,
+                self.current_price,
+                self.buy_now_price,
+                self.start_time,
                 self.end_time,
             ))
-
 
     def convert_csv_to_excel(self):
         """
@@ -156,7 +151,6 @@ class Parser:
             for row in csv.reader(file):
                 ws.append(row)
         wb.save(f'data/all_data.xlsx')
-
 
     def run(self):
         self.get_fool_page()
