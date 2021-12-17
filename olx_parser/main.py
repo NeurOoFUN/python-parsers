@@ -132,7 +132,7 @@ class Parser:
             if soup.find('p', text = re.compile('Общая площадь:')):
                 self.square = soup.find('p', text = re.compile('Общая площадь:')).get_text().strip()
             elif soup.find('p', text = re.compile('Площадь участка:')):
-                self.square = square = soup.find('p', text = re.compile('Площадь участка:')).get_text().strip()
+                self.square = soup.find('p', text = re.compile('Площадь участка:')).get_text().strip()
         except:
             self.square = 'Информация не указана'
         # ID.

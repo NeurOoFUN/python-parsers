@@ -4,10 +4,16 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-# useful for handling different item types with a single interface
+# useful for handling different item types with a single inte
+import json
+
+
 from itemadapter import ItemAdapter
 
 
 class OzonScrapyParserPipeline:
     def process_item(self, item, spider):
-        return item
+        with open('datas.json', 'a') as file:
+            line = json.dumps(dict(item), ensure_ascii=False, indent=4)
+            file.write(line)
+            return item

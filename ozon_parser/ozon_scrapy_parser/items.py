@@ -5,16 +5,18 @@
 
 import scrapy
 
-from scrapy.loader.processors import TakeFirst
+from scrapy.loader.processors import TakeFirst, MapCompose
+
+
+def filter_id(value):
+    return value.split(':')[-1].strip()
 
 
 class OzonScrapyParserItem(scrapy.Item):
     # define the fields for your item here like:
     url = scrapy.Field()
-    category_name = scrapy.Field(input_processor=TakeFirst())
-    product_name = scrapy.Field()
+    product_name = scrapy.Field(output_processor=MapCompose(str.strip))
     price = scrapy.Field(input_processor=TakeFirst())
     specifications = scrapy.Field()
-    presence = scrapy.Field()
     img_link = scrapy.Field()
-    id = scrapy.Field()
+    id = scrapy.Field(output_processor=MapCompose(filter_id))
