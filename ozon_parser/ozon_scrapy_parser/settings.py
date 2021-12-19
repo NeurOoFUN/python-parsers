@@ -15,7 +15,9 @@ SPIDER_MODULES = ['ozon_scrapy_parser.spiders']
 NEWSPIDER_MODULE = 'ozon_scrapy_parser.spiders'
 
 FEED_EXPORT_ENCODING = 'utf-8'
-
+# FEED_EXPORT_FIELDS = [] Настройка порядка полей (если нужно)
+# FEED_FORMAT = 'csv'
+# FEED_URI = 'datas.csv'
 # {'user-agent': f'{UserAgent().random}'}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'ozon_scrapy_parser (+http://www.ozon.ru)'
@@ -67,7 +69,8 @@ DOWNLOAD_DELAY = 1.5
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'ozon_scrapy_parser.pipelines.OzonScrapyParserPipeline': 300,
+    'ozon_scrapy_parser.pipelines.Save_to_json': 300,
+    'ozon_scrapy_parser.pipelines.CSVPipeline': 350,
 }
 #
 # Enable and configure the AutoThrottle extension (disabled by default)
