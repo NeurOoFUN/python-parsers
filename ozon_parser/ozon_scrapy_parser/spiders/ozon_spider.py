@@ -5,6 +5,9 @@ from scrapy.loader import ItemLoader
 
 
 class OzonSpiderSpider(scrapy.Spider):
+    """
+    Основной класс паука.
+    """
     name = 'ozon_spider'
     allowed_domains = ['ozon.ru']
 
@@ -16,6 +19,9 @@ class OzonSpiderSpider(scrapy.Spider):
             yield scrapy.Request(url=urls, callback=self.get_product_links)
 
     def get_product_links(self, response):
+        """
+        Получает ссылки на товары, + пагенация.
+        """
         product_links = response.xpath('//div[@class="bi6"]/a/@href').getall()
         for links in product_links:
             yield response.follow(url=links, callback=self.parse)
@@ -26,6 +32,9 @@ class OzonSpiderSpider(scrapy.Spider):
                 return
 
     def parse(self, response):
+        """
+        Основной сборщик данных.
+        """
         i = ItemLoader(item=OzonScrapyParserItem(), response=response)
         i.add_value('url', response.url)
         i.add_xpath('product_name', '//h1[@class="e8j2"]/text()')

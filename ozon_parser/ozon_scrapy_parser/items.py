@@ -13,6 +13,9 @@ def filter_id(value):
 
 
 class OzonScrapyParserItem(scrapy.Item):
+    """
+    Собс-но айтемы.
+    """
     # define the fields for your item here like:
     url = scrapy.Field()
     product_name = scrapy.Field(output_processor=MapCompose(str.strip))

@@ -56,9 +56,9 @@ DOWNLOAD_DELAY = 1.5
 #
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'ozon_scrapy_parser.middlewares.OzonScrapyParserDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    'ozon_scrapy_parser.middlewares.OzonScrapyParserDownloaderMiddleware': 100,
+}
 #
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -70,7 +70,7 @@ DOWNLOAD_DELAY = 1.5
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'ozon_scrapy_parser.pipelines.Save_to_json': 300,
-    'ozon_scrapy_parser.pipelines.CSVPipeline': 350,
+    'ozon_scrapy_parser.pipelines.Save_to_csv': 350,
 }
 #
 # Enable and configure the AutoThrottle extension (disabled by default)

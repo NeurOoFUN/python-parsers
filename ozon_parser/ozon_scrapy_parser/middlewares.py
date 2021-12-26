@@ -4,9 +4,8 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-
 # useful for handling different item types with a single interface
-from itemadapter import is_item, ItemAdapter
+from faker import Faker
 
 
 class OzonScrapyParserSpiderMiddleware:
@@ -69,16 +68,13 @@ class OzonScrapyParserDownloaderMiddleware:
         return s
 
     def process_request(self, request, spider):
-        # Called for each request that goes through the downloader
-        # middleware.
-
-        # Must either:
-        # - return None: continue processing this request
-        # - or return a Response object
-        # - or return a Request object
-        # - or raise IgnoreRequest: process_exception() methods of
-        #   installed downloader middleware will be called
-        return None
+        """
+        Подмена юзер агента.
+        """
+        def process_request(self, request, spider):
+            f = Faker()
+            agent = f.firefox()
+            request.headers['User-Agent'] = agent
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
