@@ -7,7 +7,6 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-# from fake_useragent import UserAgent
 
 BOT_NAME = 'ozon_scrapy_parser'
 
@@ -18,7 +17,6 @@ FEED_EXPORT_ENCODING = 'utf-8'
 # FEED_EXPORT_FIELDS = [] Настройка порядка полей (если нужно)
 # FEED_FORMAT = 'csv'
 # FEED_URI = 'datas.csv'
-# {'user-agent': f'{UserAgent().random}'}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'ozon_scrapy_parser (+http://www.ozon.ru)'
 
@@ -37,7 +35,7 @@ DOWNLOAD_DELAY = 1.5
 # CONCURRENT_REQUESTS_PER_IP = 16
 #
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 #
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
@@ -57,7 +55,7 @@ DOWNLOAD_DELAY = 1.5
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'ozon_scrapy_parser.middlewares.OzonScrapyParserDownloaderMiddleware': 100,
+    'ozon_scrapy_parser.middlewares.OzonScrapyParserDownloaderMiddleware': 500,
 }
 #
 # Enable or disable extensions
