@@ -17,9 +17,6 @@ class PromSpider(scrapy.Spider):
         for i in links:
             yield response.follow(url=i, callback=self.get_category_links)
 
-    def get_sub_category_links(self, response):
-        sub_links = response.xpath()
-
     def parse(self, response):
         i = ItemLoader(item=PromScrapyParserItem(), response=response)
         i.add_value('url', response.url)
