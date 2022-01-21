@@ -5,11 +5,9 @@ import fake_useragent
 from bs4 import BeautifulSoup
 
 
-
-
 def get_data():
     user = fake_useragent.UserAgent().random
-    url = f'https://albico.ru/products/fartuki/'
+    url = 'https://albico.ru/products/fartuki/'
     headers = {
         'User-Agent': user
     }
@@ -43,7 +41,7 @@ def get_data():
                 params = datas.find(class_ = 'apron_detail_tabs_panel').get_text(' ').strip()
                 all_datas_list.append(
                     {
-                        'Название': name, 
+                        'Название': name,
                         'Характеристики': params
                     }
                 )
@@ -53,14 +51,6 @@ def get_data():
         print(f'Осталось спарсить страниц: {page_count} из 24')
         if page_count == 0:
             print('Сбор данных успешно завершен!')
-
-
-
-
-
-
-
-
 
 
 get_data()

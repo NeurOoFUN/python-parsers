@@ -90,42 +90,42 @@ class Parser:
         # Картинка.
         try:
             self.img = soup.find('div', class_ = 'swiper-zoom-container').find('img').get('src')
-        except:
+        except Exception:
             self.img = 'Нет картинки.'
         # Дата публикации.
         try:
             self.date = soup.find('span', class_ = 'css-19yf5ek').get_text().strip()
-        except:
+        except Exception:
             self.date = 'Информация не указана'
         # Заголовок объявления.
         try:
             self.ads_title = soup.find('h1', class_ = 'css-r9zjja-Text eu5v0x0').get_text().strip()
-        except:
+        except Exception:
             self.ads_title = 'Заголовок объявления не указан.'
         # Цена.
         try:
             self.price = soup.find('h3', class_ = 'css-okktvh-Text eu5v0x0').get_text().strip()
-        except:
+        except Exception:
             self.price = 'Цена не указана'
         # Описание.
         try:
             self.description = soup.find('div', class_ = 'css-g5mtbi-Text').get_text().strip()
-        except:
+        except Exception:
             self.description = 'Нет описания'
         # Этаж.
         try:
             self.floor = soup.find('p', text = re.compile('Этаж:')).get_text().strip()
-        except:
+        except Exception:
             self.floor = 'Информащия не указана.'
         # Этажность.
         try:
             self.number_of_storeys = soup.find('p', text = re.compile('Этажность:')).get_text().strip()
-        except:
+        except Exception:
             self.number_of_storeys = 'Информащия не указана.'
         # Количество комнат.
         try:
             self.rooms_of_numbers = soup.find('p', text = re.compile('Количество комнат:')).get_text().strip()
-        except:
+        except Exception:
             self.rooms_of_numbers = 'Информация не указана'
         # Площадь.
         try:
@@ -133,17 +133,17 @@ class Parser:
                 self.square = soup.find('p', text = re.compile('Общая площадь:')).get_text().strip()
             elif soup.find('p', text = re.compile('Площадь участка:')):
                 self.square = soup.find('p', text = re.compile('Площадь участка:')).get_text().strip()
-        except:
+        except Exception:
             self.square = 'Информация не указана'
         # ID.
         try:
             self.id = soup.find('span', class_ = 'css-9xy3gn-Text eu5v0x0').get_text().strip()
-        except:
+        except Exception:
             self.id = 'Информация не указана'
         # Имя собственника.
         try:
             self.name = soup.find('h2', class_ = 'css-u8mbra-Text eu5v0x0').get_text().strip()
-        except:
+        except Exception:
             self.name = 'Информация не указана'
         # Номер телефона.
         # НЕ ЗАБЫТЬ!!!

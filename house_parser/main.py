@@ -72,7 +72,7 @@ class Parser:
                     self.all_product_links = self.domain + item.get('href')
                     all_product_links_list.append(self.all_product_links)
                     self.all_datad_from_pcoduct(self.all_product_links)
-            except:
+            except Exception:
                 links = soup.find_all('div', class_ = 'content-entry')
                 for item in links:
                     self.all_product_links = self.domain + item.find('a').get('href')
@@ -93,18 +93,18 @@ class Parser:
         # Название объявления.
         try:
             self.product_name = soup.find('span', class_ = 'title').get_text()
-        except:
+        except Exception:
             self.product_name = 'Название объявления не указано.'
         # Тип автора(собственник, агенство недвижимости, и т.д.).
         ad_author_block = soup.find('div', class_ = 'offer-card-contacts__wrapper _published').find('div', class_ = 'offer-card-contacts__block')
         try:
             self.author_type = ad_author_block.find('div', class_ = 'offer-card-contacts__person _type').get_text().strip()
-        except:
+        except Exception:
             self.author_type = 'Тип автора объявления не указан.'
         # Имя автора объявления.
         try:
             self.author_name = ad_author_block.find('span', class_ = 'ui-kit-link__inner').get_text().strip()
-        except:
+        except Exception:
             self.author_name = 'Имя автора объявления не указано.'
         # Номер телефона автора объявления.
         try:
@@ -112,7 +112,7 @@ class Parser:
             for item in author_phone:
                 phone = item.get('href')
                 self.all_phone_list.append(phone)
-        except:
+        except Exception:
             phone = 'Номер телефона не указан.'
         self.save_to_csv()
 

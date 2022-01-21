@@ -61,17 +61,17 @@ class Parser:
         # Название.
         try:
             name = self.driver.find_element_by_xpath('//*[@id="isolation"]/main/div[2]/h1').text.strip()
-        except:
+        except Exception:
             name = 'Название товара не указано.'
         # Цена.
         try:
             price = self.driver.find_element_by_xpath('//*[@id="current_price"]').text.strip()
-        except:
+        except Exception:
             price = 'Цена товара не указана.'
         # Описание.
         try:
             description = self.driver.find_element_by_xpath('//*[@id="product-desc"]').text.strip()
-        except:
+        except Exception:
             description = 'Описание товара не указано.'
         with open('data/all_data.csv', 'a', encoding='utf-8') as file:
             writer = csv.writer(file)

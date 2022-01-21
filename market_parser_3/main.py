@@ -48,17 +48,17 @@ def get_data():
             for all_datas in data:
                 try:
                     code = all_datas.find(class_ = 'product-code').text.strip().split('Код: ')[1]
-                except:
+                except Exception:
                     code = 'Код товара не указан.'
 
                 try:
                     price = all_datas.find(class_ = 'product-price').find('span').text.strip() + ' Руб'
-                except:
+                except Exception:
                     price = 'Цена товара не указана.'
 
                 try:
                     img = 'https://www.kolesa-darom.ru' + all_datas.find(class_ = 'image-zoom kd-product-preview__zoom').find('img').get('src')
-                except:
+                except Exception:
                     img = 'Нет ссылки на изображение'
                 description = soup.find_all(class_ = 'dots-leaders-item')
                 for description_datas in description:

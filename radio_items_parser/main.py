@@ -100,27 +100,27 @@ class Parser:
         # Имя лота.
         try:
             self.lot_name = soup.find('div', class_ = 'item_name').find('h1').get_text().strip()
-        except:
+        except Exception:
             self.lot_name = 'No_lot_name.'
         # Текущая цена.
         try:
             self.current_price = soup.find('span', class_ = 'current_price_value').get_text().strip()
-        except:
+        except Exception:
             self.current_price = 'No_current_price.'
         # Бонусная цена(если купить сейчас).
         try:
             self.buy_now_price = soup.find('span', class_ = 'blits_price_value').get_text().strip()
-        except:
+        except Exception:
             self.buy_now_price = 'No_buy_now_price .'
         # Начальное время.
         try:
             self.start_time = soup.find_all('div', class_ = 'item_data')[2].get_text().split('e:')[1].strip()
-        except:
+        except Exception:
             self.start_time = 'No_start_time.'
         # Крайнее время.
         try:
             self.end_time = soup.find_all('div', class_ = 'item_data')[3].get_text().split('e:')[1].strip()
-        except:
+        except Exception:
             self.end_time = 'No_end_time.'
         self.link_count += 1
         print(f'Обрабатывается лот: {self.link_count} из {len(self.links)}')
@@ -147,10 +147,10 @@ class Parser:
         """
         wb = Workbook()
         ws = wb.active
-        with open(f'data/all_data.csv', 'r', encoding='utf-8') as file:
+        with open('data/all_data.csv', 'r', encoding='utf-8') as file:
             for row in csv.reader(file):
                 ws.append(row)
-        wb.save(f'data/all_data.xlsx')
+        wb.save('data/all_data.xlsx')
 
     def run(self):
         self.get_fool_page()

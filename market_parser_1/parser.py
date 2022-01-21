@@ -30,10 +30,8 @@ def main():
 
             for item in all_links_list:
                 r = requests.get(url=item, headers=headers)
-                
                 with open(f'data/{iteration_count}.html', 'w', encoding='utf-8') as file:
                     file.write(r.text)
-                
                 with open(f'data/{iteration_count}.html', encoding='utf-8') as file:
                     src = file.read()
 
@@ -51,18 +49,19 @@ def main():
                         characteristics_dict[characteristics_key] = characteristics_value.strip()
                     all_product_info_list.append(
                         {
-                            'Название': name, 
-                            'Артикул': article, 
+                            'Название': name,
+                            'Артикул': article,
                             'Характеристики': characteristics_dict
                         }
                     )
             with open('data/files.json', 'a', encoding='utf-8') as file:
                 json.dump(all_product_info_list, file, indent=4, ensure_ascii=False)
-        iteration_count -=1
+        iteration_count -= 1
         print('Идет сбор данных...')
         print(f'Осталось итераций: {iteration_count} / 22')
         if iteration_count == 0:
             print('Сбор данных завершен!')
         time.sleep(random.randrange(2, 4))
+
 
 main()
