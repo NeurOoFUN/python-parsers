@@ -13,7 +13,7 @@ class Save_to_json:
     Запись в json.
     """
     def __init__(self):
-        file = open('collected_data/datas.json', 'w+b')
+        file = open('datas.json', 'w+b')
         self.exporter = JsonItemExporter(file, ensure_ascii=False, indent=4)
 
     def spider_opened(self, spider):
@@ -34,7 +34,7 @@ class Save_to_csv:
     Запись в csv.
     """
     def __init__(self):
-        file = open('collected_data/datas.csv', 'w+b')
+        file = open('datas.csv', 'w+b')
         self.exporter = CsvItemExporter(file)
 
     def spider_opened(self, spider):

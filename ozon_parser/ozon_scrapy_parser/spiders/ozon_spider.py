@@ -22,13 +22,13 @@ class OzonSpiderSpider(scrapy.Spider):
         """
         Получает ссылки на товары, + пагенация.
         """
-        product_links = response.xpath('//div[@class="bi6"]/a/@href').getall()
+        product_links = response.xpath('//a[@class="tile-hover-target hh1"]/@href').getall()
         for links in product_links:
             yield response.follow(url=links, callback=self.parse)
-        next_page = response.xpath('//a[@class="ui-b4"]/@href').getall()
+        next_page = response.xpath('//a[@class="ui-b2"]/@href').getall()
         for pagen_links in next_page:
             yield response.follow(url=pagen_links, callback=self.get_product_links)
-            if response.xpath('//div[@class="f9g7"]'):
+            if response.xpath('//div[@class="p1w"]'):
                 return
 
     def parse(self, response):
@@ -37,10 +37,10 @@ class OzonSpiderSpider(scrapy.Spider):
         """
         i = ItemLoader(item=OzonScrapyParserItem(), response=response)
         i.add_value('url', response.url)
-        i.add_xpath('product_name', '//h1[@class="e8j2"]/text()')
-        i.add_xpath('price', '//span[@class="c2h5 c2h6"]//text()')
-        i.add_xpath('price', '//span[@class="c2h5"]//text()')
-        i.add_xpath('specifications', '//div[@class="da3"]//text()')
-        i.add_xpath('img_link', '//div[@class="e9r7"]/img/@src')
-        i.add_xpath('id', '//span[@class="fk fk1"]//text()[2]')
+        i.add_xpath('product_name', '//h1[@class="j2p"]/text()')
+        i.add_xpath('price', '//span[@class="jo0 j0o"]//text()')
+        i.add_xpath('price', '//span[@class="jo0"]//text()')
+        i.add_xpath('specifications', '//dl[@class="i0n"]//text()')
+        i.add_xpath('img_link', '//div[@class="sh1"]/img/@src')
+        i.add_xpath('id', '//span[@class="i2w w2i"]//text()[2]')
         yield i.load_item()
