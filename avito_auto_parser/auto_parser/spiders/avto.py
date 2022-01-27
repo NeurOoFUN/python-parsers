@@ -4,7 +4,9 @@ import scrapy
 class AvtoSpider(scrapy.Spider):
     name = 'avto'
     allowed_domains = ['avito.ru']
-    start_urls = ['http://avito.ru/']
+
+    def start_requests(self, response):
+        pass
 
     def parse(self, response):
         pass
