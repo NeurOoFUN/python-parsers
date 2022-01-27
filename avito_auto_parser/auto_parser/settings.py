@@ -14,7 +14,7 @@ NEWSPIDER_MODULE = 'auto_parser.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-# USER_AGENT = 'auto_parser (+http://www.yourdomain.com)'
+USER_AGENT = 'auto_parser (+http://avito.ru)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
