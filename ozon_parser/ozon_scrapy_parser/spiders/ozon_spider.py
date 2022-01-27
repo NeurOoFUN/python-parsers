@@ -1,7 +1,7 @@
 import scrapy
+from scrapy.loader import ItemLoader
 
 from ozon_scrapy_parser.items import OzonScrapyParserItem
-from scrapy.loader import ItemLoader
 
 
 class OzonSpiderSpider(scrapy.Spider):
@@ -22,12 +22,14 @@ class OzonSpiderSpider(scrapy.Spider):
         """
         Получает ссылки на товары, + пагенация.
         """
-        product_links = response.xpath('//a[@class="tile-hover-target hh1"]/@href').getall()
+        product_links = response.xpath(
+            '//a[@class="tile-hover-target hh1"]/@href').getall()
         for links in product_links:
             yield response.follow(url=links, callback=self.parse)
         next_page = response.xpath('//a[@class="ui-b2"]/@href').getall()
         for pagen_links in next_page:
-            yield response.follow(url=pagen_links, callback=self.get_product_links)
+            yield response.follow(url=pagen_links,
+                                  callback=self.get_product_links)
             if response.xpath('//div[@class="p1w"]'):
                 return
 

@@ -38,7 +38,8 @@ class Save_to_csv:
         self.exporter = CsvItemExporter(file)
 
     def spider_opened(self, spider):
-        self.exporter.fields_to_export = ["url", "product_name", "price", "specifications", "img_link", "id", ]
+        self.exporter.fields_to_export = ["url", "product_name", "price",
+                                          "specifications", "img_link", "id", ]
         self.exporter.start_exporting()
 
     @classmethod

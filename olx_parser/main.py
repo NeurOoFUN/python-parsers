@@ -1,9 +1,8 @@
-import requests
 import re
-import openpyxl
 import csv
 import os
 
+import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 
@@ -35,7 +34,7 @@ class Parser:
         self.session = requests.Session()
         self.session.headers = {
             'user-agent': f'{self.useragent}',
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'accept': '*/*',
             'accept-language': 'ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7',
             'accept-encoding': 'gzip, deflate, br'
         }
@@ -49,10 +48,11 @@ class Parser:
         """
         Собирает с сайта ссылки и имена на стартовые категории.
         """
-        response = self.session.get(url='https://www.olx.ua/nedvizhimost/').text
+        response = self.session.get(
+            url='https://www.olx.ua/nedvizhimost/').text
         soup = BeautifulSoup(response, 'lxml')
         all_start_category_links_list = []
-        all_start_category = soup.find_all('li', class_ = 'visible')
+        all_start_category = soup.find_all('li', class_='visible')
         for item in all_start_category:
             start_category_links = item.find('a').get('href')
             self.start_category_names = item.find('span').get_text().strip()
@@ -65,7 +65,8 @@ class Parser:
         """
         response = self.session.get(url=start_category_links).text
         soup = BeautifulSoup(response, 'lxml')
-        last_page = soup.find('div', class_ = 'pager rel clr').find_all('span')[-3].get_text().strip()
+        last_page = soup.find('div', class_='pager rel clr') \
+                        .find_all('span')[-3].get_text().strip()
         for i in range(1, int(last_page) + 1):
             pagen_links = start_category_links + f'?page={i}'
             self.get_all_ad(pagen_links)
@@ -76,11 +77,13 @@ class Parser:
         """
         response = self.session.get(url=pagen_links).text
         soup = BeautifulSoup(response, 'lxml')
-        all_ads = soup.find_all('tr', class_ = 'wrap')
+        all_ads = soup.find_all('tr', class_='wrap')
         all_ads_links_list = []
         for item in all_ads:
-            self.ads_links = item.find('div', class_ = 'space rel').find('h3').find('a').get('href')
-            self.ads_address = item.find_all('small', class_ = 'breadcrumb x-normal')[1].get_text().strip()
+            self.ads_links = item.find('div', class_='space rel') \
+                                 .find('h3').find('a').get('href')
+            self.ads_address = item.find_all(
+                'small', class_='breadcrumb x-normal')[1].get_text().strip()
             all_ads_links_list.append(self.ads_links)
             self.get_all_datas(self.ads_links)
 
@@ -89,60 +92,73 @@ class Parser:
         soup = BeautifulSoup(response, 'lxml')
         # Картинка.
         try:
-            self.img = soup.find('div', class_ = 'swiper-zoom-container').find('img').get('src')
+            self.img = soup.find(
+                'div', class_='swiper-zoom-container').find('img').get('src')
         except Exception:
             self.img = 'Нет картинки.'
         # Дата публикации.
         try:
-            self.date = soup.find('span', class_ = 'css-19yf5ek').get_text().strip()
+            self.date = soup.find(
+                'span', class_='css-19yf5ek').get_text().strip()
         except Exception:
             self.date = 'Информация не указана'
         # Заголовок объявления.
         try:
-            self.ads_title = soup.find('h1', class_ = 'css-r9zjja-Text eu5v0x0').get_text().strip()
+            self.ads_title = soup.find(
+                'h1', class_='css-r9zjja-Text eu5v0x0').get_text().strip()
         except Exception:
             self.ads_title = 'Заголовок объявления не указан.'
         # Цена.
         try:
-            self.price = soup.find('h3', class_ = 'css-okktvh-Text eu5v0x0').get_text().strip()
+            self.price = soup.find(
+                'h3', class_='css-okktvh-Text eu5v0x0').get_text().strip()
         except Exception:
             self.price = 'Цена не указана'
         # Описание.
         try:
-            self.description = soup.find('div', class_ = 'css-g5mtbi-Text').get_text().strip()
+            self.description = soup.find(
+                'div', class_='css-g5mtbi-Text').get_text().strip()
         except Exception:
             self.description = 'Нет описания'
         # Этаж.
         try:
-            self.floor = soup.find('p', text = re.compile('Этаж:')).get_text().strip()
+            self.floor = soup.find(
+                'p', text=re.compile('Этаж:')).get_text().strip()
         except Exception:
             self.floor = 'Информащия не указана.'
         # Этажность.
         try:
-            self.number_of_storeys = soup.find('p', text = re.compile('Этажность:')).get_text().strip()
+            self.number_of_storeys = soup.find(
+                'p', text=re.compile('Этажность:')).get_text().strip()
         except Exception:
             self.number_of_storeys = 'Информащия не указана.'
         # Количество комнат.
         try:
-            self.rooms_of_numbers = soup.find('p', text = re.compile('Количество комнат:')).get_text().strip()
+            self.rooms_of_numbers = soup.find(
+                'p', text=re.compile('Количество комнат:')).get_text().strip()
         except Exception:
             self.rooms_of_numbers = 'Информация не указана'
         # Площадь.
         try:
-            if soup.find('p', text = re.compile('Общая площадь:')):
-                self.square = soup.find('p', text = re.compile('Общая площадь:')).get_text().strip()
-            elif soup.find('p', text = re.compile('Площадь участка:')):
-                self.square = soup.find('p', text = re.compile('Площадь участка:')).get_text().strip()
+            if soup.find('p', text=re.compile('Общая площадь:')):
+                self.square = soup.find(
+                    'p', text=re.compile('Общая площадь:')).get_text().strip()
+            elif soup.find('p', text=re.compile('Площадь участка:')):
+                self.square = soup.find(
+                    'p', text=re.compile('Площадь участка:')) \
+                    .get_text().strip()
         except Exception:
             self.square = 'Информация не указана'
         # ID.
         try:
-            self.id = soup.find('span', class_ = 'css-9xy3gn-Text eu5v0x0').get_text().strip()
+            self.id = soup.find(
+                'span', class_='css-9xy3gn-Text eu5v0x0').get_text().strip()
         except Exception:
             self.id = 'Информация не указана'
         # Имя собственника.
         try:
-            self.name = soup.find('h2', class_ = 'css-u8mbra-Text eu5v0x0').get_text().strip()
+            self.name = soup.find(
+                'h2', class_='css-u8mbra-Text eu5v0x0').get_text().strip()
         except Exception:
             self.name = 'Информация не указана'
         # Номер телефона.

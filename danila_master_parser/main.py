@@ -1,17 +1,19 @@
-import requests
 import csv
 import os
 
+import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from selenium import webdriver
+
+from settings import CHROME_DRIVER_PATH
 
 print('Скрипт запущен...')
 
 csv_headers = (
     'Название товара',
     'Цена товара',
-    'Опимание товара',
+    'Опиcание товара',
 )
 
 
@@ -29,7 +31,8 @@ class Parser:
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument('--headless')
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
-        self.driver = webdriver.Chrome(executable_path='/home/neuroo/github/python-parsers/danila_master_parser/chromedriver', options=options)
+        self.driver = webdriver.Chrome(
+            executable_path=CHROME_DRIVER_PATH, options=options)
         if not os.path.exists('data'):
             os.mkdir('data')
         with open('data/all_data.csv', 'w', encoding='utf-8') as file:
@@ -41,13 +44,14 @@ class Parser:
         url = 'https://www.danilamaster.net/catalog/oboi/'
         response = self.session.get(url).text
         soup = BeautifulSoup(response, 'lxml')
-        last_page = soup.find('ul', class_='pagination').find_all('li')[-1].find('a').get('href').split('=')[1]
+        last_page = soup.find('ul', class_='pagination').find_all('li')[-1] \
+            .find('a').get('href').split('=')[1]
         for i in range(1, int(last_page) + 1):
             all_start_links_list = []
             pagen_url = url + f'?PAGEN_1={i}'
             response = self.session.get(url=pagen_url).text
             soup = BeautifulSoup(response, 'lxml')
-            link = soup.find_all('div', class_ = 'name-inner-wrap')
+            link = soup.find_all('div', class_='name-inner-wrap')
             print(f'Обрабатывается страница{i}/{last_page}')
             for i in link:
                 links = i.find('a').get('href')
@@ -60,17 +64,20 @@ class Parser:
         self.driver.implicitly_wait(5)
         # Название.
         try:
-            name = self.driver.find_element_by_xpath('//*[@id="isolation"]/main/div[2]/h1').text.strip()
+            name = self.driver.find_element_by_xpath(
+                '//*[@id="isolation"]/main/div[2]/h1').text.strip()
         except Exception:
             name = 'Название товара не указано.'
         # Цена.
         try:
-            price = self.driver.find_element_by_xpath('//*[@id="current_price"]').text.strip()
+            price = self.driver.find_element_by_xpath(
+                '//*[@id="current_price"]').text.strip()
         except Exception:
             price = 'Цена товара не указана.'
         # Описание.
         try:
-            description = self.driver.find_element_by_xpath('//*[@id="product-desc"]').text.strip()
+            description = self.driver.find_element_by_xpath(
+                '//*[@id="product-desc"]').text.strip()
         except Exception:
             description = 'Описание товара не указано.'
         with open('data/all_data.csv', 'a', encoding='utf-8') as file:

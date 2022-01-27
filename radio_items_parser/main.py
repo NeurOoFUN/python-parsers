@@ -1,14 +1,16 @@
 import os
-import requests
 import time
 import csv
 import datetime
 
+import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from openpyxl import Workbook
+
+from settings import CHROME_DRIVER_PATH
 
 
 csv_headers = (
@@ -37,7 +39,8 @@ class Parser:
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
         options.add_argument('--headless')
         options.add_argument('--disable-blink-features=AutomationControlled')
-        self.driver = webdriver.Chrome(executable_path=r'/home/neuroo/github/python-parsers/radio_items_parser/chromedriver', options=options)
+        self.driver = webdriver.Chrome(
+            executable_path=CHROME_DRIVER_PATH, options=options)
         if not os.path.exists('data'):
             os.mkdir('data')
         with open('data/all_data.csv', 'w', encoding='utf-8') as file:
@@ -51,8 +54,11 @@ class Parser:
         Запись кода в HTML файл.
         """
         try:
-            print('Скрипт запущен...\nПрежде чем начать сбор данных, нужно собрать динамически подгружаемые ссылки...\nЭто займет 1-5 минут, зависит от текущей нагрузки на сайт...')
-            self.driver.get('http://japanparcel.com/catalogv2/Audio__video_equipment/Amplifiers')
+            print('Скрипт запущен...\nПрежде чем начать сбор данных, нужно \
+            собрать динамически подгружаемые ссылки...\nЭто займет 1-5 минут, \
+            зависит от текущей нагрузки на сайт...')
+            self.driver.get('http://japanparcel.com/catalogv2/Audio_\
+            _video_equipment/Amplifiers')
             page = self.driver.find_element_by_tag_name('html')
             page.send_keys(Keys.END)
             time.sleep(5)
@@ -84,10 +90,11 @@ class Parser:
         with open('data/fucking_page.html', encoding='utf-8') as file:
             src = file.read()
         soup = BeautifulSoup(src, 'lxml')
-        self.links = soup.find_all('div', class_ = 'search_item')
+        self.links = soup.find_all('div', class_='search_item')
         all_links_list = []
         for item in self.links:
-            self.all_links = 'http://japanparcel.com' + item.find('a').get('href')
+            self.all_links = \
+                'http://japanparcel.com' + item.find('a').get('href')
             all_links_list.append(self.all_links)
             self.get_datas_from_lots(self.all_links)
 
@@ -99,27 +106,32 @@ class Parser:
         soup = BeautifulSoup(response, 'lxml')
         # Имя лота.
         try:
-            self.lot_name = soup.find('div', class_ = 'item_name').find('h1').get_text().strip()
+            self.lot_name = soup.find(
+                'div', class_='item_name').find('h1').get_text().strip()
         except Exception:
             self.lot_name = 'No_lot_name.'
         # Текущая цена.
         try:
-            self.current_price = soup.find('span', class_ = 'current_price_value').get_text().strip()
+            self.current_price = soup.find(
+                'span', class_='current_price_value').get_text().strip()
         except Exception:
             self.current_price = 'No_current_price.'
         # Бонусная цена(если купить сейчас).
         try:
-            self.buy_now_price = soup.find('span', class_ = 'blits_price_value').get_text().strip()
+            self.buy_now_price = soup.find(
+                'span', class_='blits_price_value').get_text().strip()
         except Exception:
             self.buy_now_price = 'No_buy_now_price .'
         # Начальное время.
         try:
-            self.start_time = soup.find_all('div', class_ = 'item_data')[2].get_text().split('e:')[1].strip()
+            self.start_time = soup.find_all(
+                'div', class_='item_data')[2].get_text().split('e:')[1].strip()
         except Exception:
             self.start_time = 'No_start_time.'
         # Крайнее время.
         try:
-            self.end_time = soup.find_all('div', class_ = 'item_data')[3].get_text().split('e:')[1].strip()
+            self.end_time = soup.find_all(
+                'div', class_='item_data')[3].get_text().split('e:')[1].strip()
         except Exception:
             self.end_time = 'No_end_time.'
         self.link_count += 1
