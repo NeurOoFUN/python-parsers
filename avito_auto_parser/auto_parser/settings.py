@@ -1,11 +1,4 @@
-# Scrapy settings for auto_parser project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     https://docs.scrapy.org/en/latest/topics/settings.html
-#     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from fake_useragent import UserAgent
 
 BOT_NAME = 'auto_parser'
 
@@ -13,33 +6,33 @@ SPIDER_MODULES = ['auto_parser.spiders']
 NEWSPIDER_MODULE = 'auto_parser.spiders'
 
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'auto_parser (+http://avito.ru)'
+USER_AGENT = {'user-agent': f'{UserAgent().random}'}
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 16
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-# DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
 # DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
+#  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/\
+#  avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+#  'Accept-Language': 'en',
 # }
 
 # Enable or disable spider middlewares
@@ -51,7 +44,8 @@ ROBOTSTXT_OBEY = True
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 # DOWNLOADER_MIDDLEWARES = {
-#    'auto_parser.middlewares.AutoParserDownloaderMiddleware': 543,
+#     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+#     'auto_parser.middlewares.TooManyRequestsRetryMiddleware': 543,
 # }
 #
 # Enable or disable extensions
@@ -80,7 +74,8 @@ ROBOTSTXT_OBEY = True
 # AUTOTHROTTLE_DEBUG = False
 #
 # Enable and configure HTTP caching (disabled by default)
-# See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
+# See https://docs.scrapy.org/en/latest/topics/downloader-middleware
+# .html#httpcache-middleware-settings
 # HTTPCACHE_ENABLED = True
 # HTTPCACHE_EXPIRATION_SECS = 0
 # HTTPCACHE_DIR = 'httpcache'

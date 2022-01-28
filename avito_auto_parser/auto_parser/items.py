@@ -8,3 +8,4 @@ import scrapy
 
 class AutoParserItem(scrapy.Item):
     url = scrapy.Field()
+    name = scrapy.Field()
