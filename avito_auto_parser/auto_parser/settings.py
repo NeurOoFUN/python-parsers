@@ -12,7 +12,7 @@ USER_AGENT = {'user-agent': f'{UserAgent().random}'}
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 16
+CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -30,9 +30,7 @@ COOKIES_ENABLED = False
 
 # Override the default request headers:
 # DEFAULT_REQUEST_HEADERS = {
-#  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/\
-#  avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-#  'Accept-Language': 'en',
+#
 # }
 
 # Enable or disable spider middlewares

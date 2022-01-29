@@ -18,9 +18,7 @@ Main class.
             'https://www.avito.ru/moskva/avtomobili?radius=200',
         ]
         for urls in start_urls:
-            yield scrapy.Request(url=urls,  # FIXME
-                                 meta={'proxy': '188.43.15.89'},
-                                 callback=self.get_lot_links)
+            yield scrapy.Request(url=urls, callback=self.get_lot_links)
 
     def get_lot_links(self, response):
         lot_links = response.xpath(
