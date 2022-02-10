@@ -20,10 +20,36 @@ Pass
 
 
 def get_product_datas(fool_link):
+    """
+Pass
+    """
     response = requests.get(url=fool_link, headers=headers).text
     soup = BeautifulSoup(response, 'lxml')
-    product_name = soup.find('h1', class_='same-part-kt__header').get_text()
-    print(product_name)
+    # Name.
+    try:
+        product_name = soup.find(
+            'h1', class_='same-part-kt__header').get_text().strip()
+    except Exception:
+        product_name = 'product has no name.'
+    # Price.
+    try:
+        price = soup.find(
+            'span', class_='price-block__final-price').get_text().strip()
+    except Exception:
+        price = 'product has no price.'
+    # img link.
+    try:
+        img_link = 'https:' + soup.find(
+            'img', class_='photo-zoom__preview j-zoom-preview').get('src')
+    except Exception:
+        img_link = 'product has no img link'
+    # description.
+    try:
+        description = soup.find(
+            'p', class_='collapsable__text')
+    except Exception:
+        description = 'product has no description'
+    print(description)
 
 
 def run():
