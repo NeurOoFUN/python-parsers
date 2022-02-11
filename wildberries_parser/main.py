@@ -6,7 +6,10 @@ from settings import headers
 
 def get_start_urls():
     """
-Pass
+    Connect to the site "www.wildberries.ru", gets links to product
+    in the "auto parts" category.
+    Pages are also paginated, total pages == 1000.
+    Send links func "get_product_datas" for further processing.
     """
     for i in range(1, 1001):
         url = 'https://www.wildberries.ru/catalog/avtotovary/zapchasti-na-'\
@@ -21,7 +24,8 @@ Pass
 
 def get_product_datas(fool_link):
     """
-Pass
+    Get product links from func "get_start_urls".
+    Collected all required datas.
     """
     response = requests.get(url=fool_link, headers=headers).text
     soup = BeautifulSoup(response, 'lxml')
@@ -43,13 +47,6 @@ Pass
             'img', class_='photo-zoom__preview j-zoom-preview').get('src')
     except Exception:
         img_link = 'product has no img link'
-    # description.
-    try:
-        description = soup.find(
-            'p', class_='collapsable__text')
-    except Exception:
-        description = 'product has no description'
-    print(description)
 
 
 def run():
