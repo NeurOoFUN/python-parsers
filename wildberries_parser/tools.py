@@ -1,0 +1,35 @@
+import csv
+import json
+import os
+
+
+class Saver():
+    """
+    This class created for parsers.
+    Saved datas to "csv", "json" formats.
+    """
+    def __init__(self):
+        """Created directory for collected datas."""
+        if not os.path.exists('datas'):
+            os.mkdir('datas')
+
+    def create_csv_table(self, csv_headers: tuple):
+        """
+        Created .csv file with headers.
+        :params csv_headers: header tuple.
+        """
+        with open('datas/table.csv', 'w', encoding='utf-8') as file:
+            writer = csv.writer(
+                file, dialect='excel', quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(csv_headers)
+
+    def save_to_csv(self, fields: tuple):
+        """
+        To the file previously created by the method "create_csv_table"
+        saved fields with collected datas.
+        :params fields: fields tuple.
+        """
+        with open('datas/table.csv', 'a', encoding='utf-8') as file:
+            writer = csv.writer(
+                file, dialect='excel', quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(fields)

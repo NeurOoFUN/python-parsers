@@ -2,6 +2,15 @@ import requests
 from bs4 import BeautifulSoup
 
 from settings import headers
+from tools import Saver  # Saved class.
+
+CSV_HEADERS = (
+    'Product name',
+    'Price',
+    'Img link',
+)
+# Create csv file with headers.
+Saver().create_csv_table(CSV_HEADERS)
 
 
 def get_start_urls():
@@ -48,9 +57,15 @@ def get_product_datas(fool_link):
     except Exception:
         img_link = 'product has no img link'
 
-
-def run():
-    pass
+    # Saved datas to csv table.
+    Saver().save_to_csv(
+        (
+            product_name,
+            price,
+            img_link,
+        )
+    )
+    # need added link from product
 
 
 if __name__ == '__main__':
