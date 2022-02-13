@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from settings import headers
-from tools import Saver  # Saved class.
+from saver import Saver  # Saved class.
 
 CSV_HEADERS = (
     'Product name',
@@ -65,7 +65,15 @@ def get_product_datas(fool_link):
             img_link,
         )
     )
-    # need added link from product
+    # json datas
+    json_dict = {
+        'product_name': product_name,
+        'price': price,
+        'img_link': img_link
+    }
+    # Saved datas to json file.
+    Saver().save_to_json(json_dict)
+    # need added link from product.
 
 
 if __name__ == '__main__':

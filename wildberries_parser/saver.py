@@ -9,7 +9,7 @@ class Saver():
     Saved datas to "csv", "json" formats.
     """
     def __init__(self):
-        """Created directory for collected datas."""
+        """ Created directory for collected datas. """
         if not os.path.exists('datas'):
             os.mkdir('datas')
 
@@ -33,3 +33,11 @@ class Saver():
             writer = csv.writer(
                 file, dialect='excel', quoting=csv.QUOTE_MINIMAL)
             writer.writerow(fields)
+
+    def save_to_json(self, fields: dict):
+        """
+        Saved datas from json format.
+        :params fields: dict. explame "{'name': datas}"
+        """
+        with open('datas/collected_datas.json', 'a', encoding='utf-8') as file:
+            json.dump(fields, file, indent=4, ensure_ascii=False)
