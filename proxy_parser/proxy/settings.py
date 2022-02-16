@@ -14,6 +14,10 @@ NEWSPIDER_MODULE = 'proxy.spiders'
 
 
 USER_AGENT = 'proxy (+http://www.proxy.com)'
+FEED_EXPORT_ENCODING = 'utf-8'
+FEED_EXPORT_FIELDS = ['ip', 'port', 'protocol']
+FEED_FORMAT = 'csv'
+FEED_URI = 'datas.csv'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -61,9 +65,9 @@ DOWNLOAD_DELAY = 1
 #
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    'proxy.pipelines.ProxyPipeline': 300,
-# }
+ITEM_PIPELINES = {
+   'proxy.pipelines.ProxyPipeline': 300,
+}
 #
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
