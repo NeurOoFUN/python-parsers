@@ -57,8 +57,7 @@ class Parser:
             print('Скрипт запущен...\nПрежде чем начать сбор данных, нужно \
             собрать динамически подгружаемые ссылки...\nЭто займет 1-5 минут, \
             зависит от текущей нагрузки на сайт...')
-            self.driver.get('http://japanparcel.com/catalogv2/Audio_\
-            _video_equipment/Amplifiers')
+            self.driver.get('http://japanparcel.com/catalogv2/Audio__video_equipment/Amplifiers')
             page = self.driver.find_element_by_tag_name('html')
             page.send_keys(Keys.END)
             time.sleep(5)
