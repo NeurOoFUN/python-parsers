@@ -2,9 +2,25 @@ import requests
 from bs4 import BeautifulSoup
 
 from setings import headers
+from saver import Saver
+
+print('The scanning process has started, it will take time...')
+
+csv_headers = (
+    'lot_link',
+    'lot_name',
+    'flavor',
+    'volume',
+    'price',
+    'img_link',
+    'presence'
+)
+# Create csv table with headers.
+Saver().create_csv_table(csv_headers)
 
 
-def pagen():
+def start_func():
+    """ Start and pagenation. """
     response = requests.get(
         url='https://gosmoke.ru/aromatizatory', headers=headers)
     soup = BeautifulSoup(response.text, 'lxml')
@@ -15,19 +31,19 @@ def pagen():
 
 def get_lot_links(next_page):
     """ Get links for lots. """
-    for i in range(1, int(next_page)):
+    for i in range(1, int(next_page) + 1):
         page = requests.get(
             url=f'https://gosmoke.ru/aromatizatory?page={i}', headers=headers)
+        print(f'page: {i} / {next_page}')
         soup = BeautifulSoup(page.text, 'lxml')
-        global lot_link
         lot_link = soup.find_all('div', class_='caption-title')
         for i in lot_link:
             link = i.find('a').get('href')
-            print(link)
             get_datas(link)
 
 
 def get_datas(link):
+    """ Get all datas, and save to csv table. """
     response = requests.get(url=link, headers=headers)
     soup = BeautifulSoup(response.text, 'lxml')
     try:
@@ -56,12 +72,18 @@ def get_datas(link):
         presence = 'in stock'
     else:
         presence = 'not available'
-    print(presence)
-
-
-def run():
-    pagen()
+    # Save all datas in csv table.
+    Saver().save_to_csv((
+            link,
+            lot_name,
+            flavor,
+            volume,
+            price,
+            img_link,
+            presence
+    ))
 
 
 if __name__ == '__main__':
-    run()
+    start_func()
+    print('Parsing is completed, the data is in the root of the project.')
