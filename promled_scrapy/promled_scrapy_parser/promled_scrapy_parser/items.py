@@ -7,4 +7,5 @@ import scrapy
 
 
 class PromledScrapyParserItem(scrapy.Item):
-    url = scrapy.Field()
+    category_name = scrapy.Field()
+    sub_category_name = scrapy.Field()
