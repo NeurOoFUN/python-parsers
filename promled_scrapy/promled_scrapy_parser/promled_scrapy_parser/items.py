@@ -8,4 +8,5 @@ import scrapy
 
 class PromledScrapyParserItem(scrapy.Item):
     category_name = scrapy.Field()
-    sub_category_name = scrapy.Field()
+    product_name = scrapy.Field()
+    modification = scrapy.Field()
