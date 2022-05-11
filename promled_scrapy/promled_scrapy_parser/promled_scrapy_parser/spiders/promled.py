@@ -10,25 +10,23 @@ class PromledSpider(SitemapSpider):
     allowed_domains = ['promled.com']
     sitemap_urls = [
         'https://promled.com/sitemap1.xml',
-        'https://promled.com/sitemap2.xml',
     ]
     sitemap_rules = [
-        ('/kategorii/', 'parse_category_and_product_name'),
-        ('', 'parse_modification'),
+        (r'(/+?\w+\S*)', 'parse'),
     ]
 
-    def parse_category_and_product_name(self, response):
+    def parse(self, response):
         i = ItemLoader(item=PromledScrapyParserItem(), response=response)
         i.add_xpath(
             'category_name',
-            '//div[@class="relatedproduct-thumb transition"]/h4//text()'
+            '//ul[@class="breadcrumb"]/li[2]//text()',  # FIXME
         )
         i.add_xpath(
-            'product_name', '//h1[@class="prohead"]/text()'
+            'sub_category_name', '//ul[@class="breadcrumb"]/li[3]//text()',
         )
-        yield i.load_item()
-
-    def parse_modification(self, response):
-        i = ItemLoader(item=PromledScrapyParserItem(), response=response)
-        i.add_xpath('modification', '//td[@class="cattdleft"]//text()')
+        i.add_xpath(
+            'product_name', '//ul[@class="breadcrumb"]/li[4]//text()',
+        )
+        i.add_xpath('modification',
+                    '//div[@class="col-sm-12"]/h1[@itemprop="name"]/text()')
         yield i.load_item()
