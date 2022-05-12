@@ -12,7 +12,7 @@ class PromledSpider(SitemapSpider):
         'https://promled.com/sitemap1.xml',
     ]
     sitemap_rules = [
-        (r'(/+?\w+\S*)', 'parse'),
+        (r'http[s]*://promled.com/(\w+-*\w*-*\w*-*\d+\S+)', 'parse'),
     ]
 
     def parse(self, response):
