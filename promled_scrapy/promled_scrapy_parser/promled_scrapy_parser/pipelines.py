@@ -1,18 +1,9 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-# useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
-
 from scrapy.exporters import CsvItemExporter, JsonItemExporter
 
 
 class Save_to_json:
     """
-    Запись в json.
+    Save to json file.
     """
     def __init__(self):
         file = open('datas.json', 'w+b')
@@ -33,7 +24,7 @@ class Save_to_json:
 
 class Save_to_csv:
     """
-    Запись в csv.
+    Save to csv file.
     """
     def __init__(self):
         file = open('datas.csv', 'w+b')

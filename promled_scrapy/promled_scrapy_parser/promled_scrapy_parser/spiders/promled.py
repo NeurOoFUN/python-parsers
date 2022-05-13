@@ -1,4 +1,3 @@
-import scrapy
 from scrapy.spiders import SitemapSpider
 from scrapy.loader import ItemLoader
 
@@ -12,21 +11,21 @@ class PromledSpider(SitemapSpider):
         'https://promled.com/sitemap1.xml',
     ]
     sitemap_rules = [
-        (r'http[s]*://promled.com/(\w+-*\w*-*\w*-*\d+\S+)', 'parse'),
+        (r'http[s]*://promled.com/(\w+-*(\w*-*)\2\2\d+\S+)', 'parse'),
     ]
 
     def parse(self, response):
         i = ItemLoader(item=PromledScrapyParserItem(), response=response)
         i.add_xpath(
-            'category_name',
-            '//ul[@class="breadcrumb"]/li[2]//text()',  # FIXME
+            'category_name', '//ul[@class="breadcrumb"]/li//text()',
         )
         i.add_xpath(
-            'sub_category_name', '//ul[@class="breadcrumb"]/li[3]//text()',
+            'sub_category_name', '//ul[@class="breadcrumb"]/li//text()',
         )
         i.add_xpath(
-            'product_name', '//ul[@class="breadcrumb"]/li[4]//text()',
+            'product_name', '//ul[@class="breadcrumb"]/li//text()',
         )
         i.add_xpath('modification',
-                    '//div[@class="col-sm-12"]/h1[@itemprop="name"]/text()')
+                    '//div[@class="col-sm-12"]/h1[@itemprop="name"]/text()'
+                    )
         yield i.load_item()
