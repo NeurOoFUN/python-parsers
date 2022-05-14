@@ -12,13 +12,21 @@ class PromledScrapyParserItem(scrapy.Item):
 
     def take_sub_category_name(value):
         if value[-4] == 'Категории':
-            return 'sub_category_name is not find'
+            return 'not find'
         else:
             return value[-3]
 
     def take_product_name(value):
         return value[-2]
 
+    def split_id(value):
+        return value[0].split(': ')[1]
+
+    def edit_description(value):
+        for i in value:
+            yield i.strip().replace(',', 'ggg') + '\n'
+
+    url = scrapy.Field()
     category_name = scrapy.Field(
         input_processor=Compose(take_category_name)
     )
@@ -29,3 +37,7 @@ class PromledScrapyParserItem(scrapy.Item):
         input_processor=Compose(take_product_name)
     )
     modification = scrapy.Field()
+    id = scrapy.Field(input_processor=Compose(split_id))
+    description = scrapy.Field(
+        input_processor=Compose(edit_description)
+    )

@@ -16,6 +16,7 @@ class PromledSpider(SitemapSpider):
 
     def parse(self, response):
         i = ItemLoader(item=PromledScrapyParserItem(), response=response)
+        i.add_value('url', response.url)
         i.add_xpath(
             'category_name', '//ul[@class="breadcrumb"]/li//text()',
         )
@@ -28,4 +29,8 @@ class PromledSpider(SitemapSpider):
         i.add_xpath('modification',
                     '//div[@class="col-sm-12"]/h1[@itemprop="name"]/text()'
                     )
+        i.add_xpath(
+            'id', '//div[@class="prodmodeL"]/text()'
+        )
+        i.add_xpath('description', '//div[@class="content_block"]//text()')
         yield i.load_item()
