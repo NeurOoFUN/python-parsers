@@ -33,4 +33,7 @@ class PromledSpider(SitemapSpider):
             'id', '//div[@class="prodmodeL"]/text()'
         )
         i.add_xpath('description', '//div[@class="content_block"]//text()')
+        i.add_xpath(
+            'characteristics',
+            '//table[@class="table table-striped"]//text()')
         yield i.load_item()
