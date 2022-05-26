@@ -1,20 +1,23 @@
+import scrapy
 from scrapy.spiders import SitemapSpider
 from scrapy.loader import ItemLoader
+from scrapy.spiders.init import InitSpider
 
 from promled_scrapy_parser.items import PromledScrapyParserItem
 
 
 class PromledSpider(SitemapSpider):
     name = 'promled'
+    login_page = 'https://promled.com/login/'
     allowed_domains = ['promled.com']
-    sitemap_urls = [
-        'https://promled.com/sitemap1.xml',
-    ]
     sitemap_rules = [
         (r'http[s]*://promled.com/(\w+-*(\w*-*)\2\2\d+\S+)', 'parse'),
     ]
+    sitemap_urls = [
+        'https://promled.com/sitemap1.xml',
+    ]
 
-    def parse(self, response):
+    def parse_items(self, response):
         i = ItemLoader(item=PromledScrapyParserItem(), response=response)
         i.add_value('url', response.url)
         i.add_xpath(
@@ -36,4 +39,5 @@ class PromledSpider(SitemapSpider):
         i.add_xpath(
             'characteristics',
             '//table[@class="table table-striped"]//text()')
+        i.add_xpath('price', '//span[@class="urprice"]/text()')
         yield i.load_item()

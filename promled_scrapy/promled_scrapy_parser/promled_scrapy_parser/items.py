@@ -50,3 +50,4 @@ class PromledScrapyParserItem(scrapy.Item):
         input_processor=Compose(edit_description_and_characteristics),
         output_processor=Join()
     )
+    price = scrapy.Field()
