@@ -21,5 +21,5 @@ class PriemkaSpider(SitemapSpider):
     def parse(self, response):
         i = ItemLoader(item=PriemkaScraperItem(), response=response)
         i.add_xpath('city', '//h1[@class="entry-title"]//text()')
-        i.add_xpath('description', '//table[1]//tr')
+        i.add_xpath('description', '//table[1]//text()')
         yield i.load_item()
