@@ -8,7 +8,6 @@ def correct_description(value):
 
 
 class PriemkaScraperItem(scrapy.Item):
-    # define the fields for your item here like:
     city = scrapy.Field()
     description = scrapy.Field(
         input_processor=Compose(correct_description),
