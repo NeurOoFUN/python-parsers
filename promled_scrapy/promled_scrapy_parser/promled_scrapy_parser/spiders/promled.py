@@ -1,14 +1,13 @@
 import scrapy
 from scrapy.spiders import SitemapSpider
 from scrapy.loader import ItemLoader
-from scrapy.spiders.init import InitSpider
 
 from promled_scrapy_parser.items import PromledScrapyParserItem
 
 
 class PromledSpider(SitemapSpider):
     name = 'promled'
-    login_page = 'https://promled.com/login/'
+    login_page = ['https://promled.com/login/']
     allowed_domains = ['promled.com']
     sitemap_rules = [
         (r'http[s]*://promled.com/(\w+-*(\w*-*)\2\2\d+\S+)', 'parse'),
@@ -17,7 +16,21 @@ class PromledSpider(SitemapSpider):
         'https://promled.com/sitemap1.xml',
     ]
 
-    def parse_items(self, response):
+    def start_requests(self):
+        for i in self.login_page:
+            yield scrapy.Request(url=i, callback=self.login)
+
+    def login(self, response):
+        yield scrapy.FormRequest.from_response(
+            response,
+            formdata={'email': 'knu@sib-p.ru', 'password': 'Svet2021'},
+            callback=self._parse_sitemap
+        )
+        if Exception(ValueError):
+            for i in self.sitemap_urls:
+                yield scrapy.Request(url=i, callback=self._parse_sitemap)
+
+    def parse(self, response):
         i = ItemLoader(item=PromledScrapyParserItem(), response=response)
         i.add_value('url', response.url)
         i.add_xpath(
