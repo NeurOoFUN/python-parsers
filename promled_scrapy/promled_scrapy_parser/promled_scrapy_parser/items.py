@@ -5,6 +5,8 @@ from scrapy.loader.processors import Compose, Join
 def take_category_name(value):
     if value[-4] == 'Категории':
         return value[-3]
+    if value[-4] == 'Главная':
+        return 'not find'
     else:
         return value[-4]
 
@@ -50,4 +52,5 @@ class PromledScrapyParserItem(scrapy.Item):
         input_processor=Compose(edit_description_and_characteristics),
         output_processor=Join()
     )
-    price = scrapy.Field()
+    your_price = scrapy.Field()
+    rrc_and_mrc = scrapy.Field()

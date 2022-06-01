@@ -13,7 +13,7 @@ class PromledSpider(SitemapSpider):
         (r'http[s]*://promled.com/(\w+-*(\w*-*)\2\2\d+\S+)', 'parse'),
     ]
     sitemap_urls = [
-        'https://promled.com/sitemap1.xml',
+        'https://promled.com/robots.txt',
     ]
 
     def start_requests(self):
@@ -52,5 +52,6 @@ class PromledSpider(SitemapSpider):
         i.add_xpath(
             'characteristics',
             '//table[@class="table table-striped"]//text()')
-        i.add_xpath('price', '//span[@class="urprice"]/text()')
+        i.add_xpath('your_price', '//span[@class="urprice"]/text()')
+        i.add_xpath('rrc_and_mrc', '//span[@class="prodprice"]/text()')
         yield i.load_item()
