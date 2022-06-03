@@ -1,8 +1,19 @@
+from pathlib import Path
+import os
+
 import scrapy
 from scrapy.spiders import SitemapSpider
 from scrapy.loader import ItemLoader
+from dotenv import load_dotenv
 
 from promled_scrapy_parser.items import PromledScrapyParserItem
+
+load_dotenv()
+env_path = Path('.')/'.env'
+load_dotenv(dotenv_path=env_path)
+
+AUTH_LOGIN = os.getenv('AUTH_LOGIN')
+AUTH_PASSWORD = os.getenv('AUTH_PASSWORD')
 
 
 class PromledSpider(SitemapSpider):
@@ -23,7 +34,7 @@ class PromledSpider(SitemapSpider):
     def login(self, response):
         yield scrapy.FormRequest.from_response(
             response,
-            formdata={'email': 'knu@sib-p.ru', 'password': 'Svet2021'},
+            formdata={'email': AUTH_LOGIN, 'password': AUTH_PASSWORD},
             callback=self._parse_sitemap
         )
         if Exception(ValueError):
