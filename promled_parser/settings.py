@@ -2,6 +2,6 @@
 CHROME_DRIVER_PATH = \
     '/home/neuroo/github/python-parsers/promled_parser/chromedriver'
 
-ACCOUNT_LOGIN = 'knu@sib-p.ru'
+ACCOUNT_LOGIN = 'your login'
 
-ACCOUNT_PASSWORD = 'Svet2021'
+ACCOUNT_PASSWORD = 'your password'
