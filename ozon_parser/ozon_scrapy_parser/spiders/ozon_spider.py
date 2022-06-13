@@ -20,10 +20,10 @@ class OzonSpiderSpider(scrapy.Spider):
 
     def get_product_links(self, response):
         """
-        Получает ссылки на товары, + пагенация.
+        Получает ссылки на товары, + пагинация.
         """
         product_links = response.xpath(
-            '//a[@class="tile-hover-target hh1"]/@href').getall()
+            '//a[@class="tile-hover-target l1h"]/@href').getall()
         for links in product_links:
             yield response.follow(url=links, callback=self.parse)
         next_page = response.xpath('//a[@class="ui-b2"]/@href').getall()

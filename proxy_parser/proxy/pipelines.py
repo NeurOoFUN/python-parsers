@@ -10,4 +10,6 @@ from itemadapter import ItemAdapter
 
 class ProxyPipeline:
     def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+        adapter['ip'].extend(adapter['port'])
         return item

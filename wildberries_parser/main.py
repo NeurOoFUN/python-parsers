@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from settings import headers
 from saver import Saver  # Saved class.
 
+
 CSV_HEADERS = (
     'Product name',
     'Price',
