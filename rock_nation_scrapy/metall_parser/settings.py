@@ -55,9 +55,9 @@ ROBOTSTXT_OBEY = True
 #
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    'metall_parser.pipelines.MetallParserPipeline': 300,
-# }
+ITEM_PIPELINES = {
+   'metall_parser.pipelines.Save_to_json': 300,
+}
 #
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
