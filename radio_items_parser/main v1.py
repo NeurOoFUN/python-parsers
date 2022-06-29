@@ -26,6 +26,7 @@ csv_headers = (
 class Parser:
     """
     Парсер лотов с биржи.
+
     """
     def __init__(self):
         self.useragent = UserAgent().random
@@ -152,7 +153,7 @@ class Parser:
                 self.end_time,
             ))
 
-    def convert_csv_to_excel(self):
+    def convert_csv_to_excel():
         """
         Конвертирует CSV файл в XLSX, оставляя при этом и то и то.
         """
