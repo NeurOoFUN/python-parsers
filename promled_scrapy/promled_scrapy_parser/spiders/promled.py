@@ -41,7 +41,7 @@ class PromledSpider(SitemapSpider):
             for i in self.sitemap_urls:
                 yield scrapy.Request(url=i, callback=self._parse_sitemap)
 
-    def parse(self, response):
+    def parse(self, response, **kwargs):
         i = ItemLoader(item=PromledScrapyParserItem(), response=response)
         i.add_value('url', response.url)
         i.add_xpath(

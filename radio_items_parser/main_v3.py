@@ -48,6 +48,7 @@ class Saver:
 
 
 def parse():
+    Saver()
     print('The start parsing...')
     counter = 0
     Saver.create_csv_table(csv_headers_tuple)
