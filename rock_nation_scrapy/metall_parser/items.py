@@ -6,7 +6,7 @@ from scrapy.loader.processors import MapCompose
 
 def parse_java(value):
     pattern = re.findall(
-        r'http://rocknation\.su/upload/mp3/.+?\.mp3',
+        r'\"(\w{1,2}\. .+?)\"',
         value
     )
     return pattern
