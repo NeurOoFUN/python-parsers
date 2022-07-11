@@ -83,7 +83,6 @@ async def get_album_links_and_name():
             await download_songs(
                 album_refs=album_refs, album_name=album_name
             )
-        print(response.status_code)
 
 
 async def download_songs(album_refs, album_name):
