@@ -8,7 +8,9 @@ import requests
 
 from info import INFO
 
+# this request sessin.
 session = requests.Session()
+# fake user-agent
 f = Faker()
 agent = f.firefox()
 session.headers['User-Agent'] = agent
@@ -22,6 +24,7 @@ async def get_album_links_and_name():
         os.mkdir(group_name)
     input_group_ref = input('Enter reference on group page: ')
     print('OK, Start parsing music...')
+    # pagenation.
     for x in range(1, 10):
         response = session.get(input_group_ref + f'/{str(x)}')
         soup = BeautifulSoup(response.text, 'lxml')
@@ -37,8 +40,10 @@ async def get_album_links_and_name():
 
 async def download_songs(album_refs, album_name):
     response = session.get(url=album_refs).text
+    # path of downloaded music
     os.mkdir(os.path.normpath(f'{group_name}/{album_name}'))
     print(f'Album: {album_name}')
+    # regex, parse links from JS.
     pattern_of_ref = re.findall(
         r'http://rocknation\.su/upload/mp3/.+?\.mp3',
         response
