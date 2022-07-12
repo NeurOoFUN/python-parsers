@@ -39,23 +39,26 @@ async def get_album_links_and_name():
 
 
 async def download_songs(album_refs, album_name):
-    response = session.get(url=album_refs).text
-    # path of downloaded music
-    os.mkdir(os.path.normpath(f'{group_name}/{album_name}'))
-    print(f'Album: {album_name}')
-    # regex, parse links from JS.
-    pattern_of_ref = re.findall(
-        r'http://rocknation\.su/upload/mp3/.+?\.mp3',
-        response
-    )
-    b = 1
-    for i in pattern_of_ref:
-        download = session.get(url=i).content
-        music_path = os.path.normcase(f'{group_name}/{album_name}/{b}.mp3')
-        with open(music_path, 'wb') as file:
-            file.write(download)
-            print(f'Song: №{b}')
-            b += 1
+    try:
+        response = session.get(url=album_refs).text
+        # path of downloaded music
+        os.mkdir(os.path.normpath(f'{group_name}/{album_name}'))
+        print(f'Album: {album_name}')
+        # regex, parse links from JS.
+        pattern_of_ref = re.findall(
+            r'http://rocknation\.su/upload/mp3/.+?\.mp3',
+            response
+        )
+        b = 1
+        for i in pattern_of_ref:
+            download = session.get(url=i).content
+            music_path = os.path.normcase(f'{group_name}/{album_name}/{b}.mp3')
+            with open(music_path, 'wb') as file:
+                file.write(download)
+                print(f'Song: №{b}')
+                b += 1
+    except FileExistsError:
+        print('We have this album, next...')
 
 
 async def main():
