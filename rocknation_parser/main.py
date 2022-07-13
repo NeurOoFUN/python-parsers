@@ -46,6 +46,7 @@ def main():
                     f'Album: {album_count} / {len(album_data)}'
                 )
                 album_count += 1
+
                 download_songs(
                     album_refs=album_refs, album_name=album_name
                 )
