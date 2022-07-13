@@ -1,72 +1,84 @@
 import re
 import os
-import asyncio
+import time
 
 from bs4 import BeautifulSoup
-from faker import Faker
-import requests
 
 from info import INFO
+from tools import session
 
-# this request sessin.
-session = requests.Session()
-# fake user-agent
-f = Faker()
-agent = f.firefox()
-session.headers['User-Agent'] = agent
+print(INFO)
 
+group_name = input('Enter folder name for save downloaded music: ')
 
-async def get_album_links_and_name():
-    print(INFO)
-    global group_name
-    group_name = input('Enter folder name for save downloaded music: ')
-    if not os.path.exists(group_name):
-        os.mkdir(group_name)
-    input_group_ref = input('Enter reference on group page: ')
-    print('OK, Start parsing music...')
-    # pagenation.
-    for x in range(1, 10):
-        response = session.get(input_group_ref + f'/{str(x)}')
-        soup = BeautifulSoup(response.text, 'lxml')
-        album_name_list = soup.find('div', id='clips') \
-            .find('ol', class_='list').find_all('li')
-        for i in album_name_list:
-            album_refs = 'http://rocknation.su' + i.find('a').get('href')
-            album_name = i.get_text()
-            await download_songs(
-                album_refs=album_refs, album_name=album_name
-            )
+if not os.path.exists(group_name):
+    os.mkdir(group_name)
+
+input_group_ref = input('Enter reference on group page: ')
+
+answer = (input('Need download LIVE albums?  (enter yes / no) ')).lower()
+
+print('OK, Start parsing music...')
 
 
-async def download_songs(album_refs, album_name):
-    # try:
+def main():
+    try:
+        for page_count in range(1, 10):  # pagenation.
+            album_count = 1
+            response = session.get(input_group_ref + f'/{str(page_count)}')
+            soup = BeautifulSoup(response.text, 'lxml')
+            # 'li' tags with album links, and album names.
+            album_data = soup.find('div', id='clips') \
+                .find('ol', class_='list').find_all('li')
+
+            for li in album_data:
+                album_refs = 'http://rocknation.su' + li.find('a').get('href')
+                album_name = li.get_text()
+
+                if answer == 'no' and re.search(r'(?i)\blive\b', album_name):
+                    continue
+                print(
+                    f'Page: {page_count}, ' +
+                    f'Album: {album_count} / {len(album_data)}'
+                )
+                album_count += 1
+                download_songs(
+                    album_refs=album_refs, album_name=album_name
+                )
+
+    except ConnectionResetError:
+        print('ConnectionResetError, Trying reconnect...')
+        time.sleep(5)
+        main()
+
+
+def download_songs(album_refs=None, album_name=None):
+    try:
         response = session.get(url=album_refs).text
         # path of downloaded music
         os.mkdir(os.path.normpath(f'{group_name}/{album_name}'))
-        # print(f'Album: {album_name}')  # FIXME
         # regex, parse links from JS.
         pattern_of_ref = re.findall(
             r'http://rocknation\.su/upload/mp3/.+?\.mp3',
             response
         )
-        b = 1
+        song_count = 1
+
+        # download songs.
         for i in pattern_of_ref:
             download = session.get(url=i).content
-            music_path = os.path.normcase(f'{group_name}/{album_name}/{b}.mp3')
+            music_path = os.path.normcase(
+                f'{group_name}/{album_name}/{song_count}.mp3'
+            )
             with open(music_path, 'wb') as file:
                 file.write(download)
-                print(f'Song: №{b}')
-                b += 1
+                print(f'Song: №{song_count} / {len(pattern_of_ref)}')
+                song_count += 1
+
     except FileExistsError:
         print('We have this album, next...')
 
 
-async def main():
-    await asyncio.gather(
-        get_album_links_and_name()
-    )
-
-
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
     input('END.\nEnter any key for exit.')
