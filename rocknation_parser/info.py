@@ -38,7 +38,7 @@ ____________________8¶¶¶¶¶¶¶¶¶¶¶_____8¶                -------------
 __________________0¶¶¶¶¶¶¶¶¶¶¶¶8____8¶0
 _________________0¶¶¶¶¶¶¶¶¶¶¶¶¶8___8¶¶¶                This script parse MUSIC from this website - http://rocknation.su/
 ________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶88¶¶¶¶¶0               For start parsing you'll necessary to enter a link on interesting group for you.
-______________0¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶               Example: http://rocknation.su/mp3/band-37
+______________0¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶               Example: http://rocknation.su/mp3/band-37 or http://rocknation.su/mp3/band-1
 _____________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶0              ALL GROUPS -- http://rocknation.su/mp3
 ___________0¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶8
 __________8¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
