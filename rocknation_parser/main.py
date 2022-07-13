@@ -22,6 +22,10 @@ print('OK, Start parsing music...')
 
 
 def main():
+    """
+    This triggered function.
+    Get all album links and names.
+    """
     try:
         for page_count in range(1, 10):  # pagenation.
             album_count = 1
@@ -53,6 +57,9 @@ def main():
 
 
 def download_songs(album_refs=None, album_name=None):
+    """
+    Download and save all albums with .mp3 songs.
+    """
     try:
         response = session.get(url=album_refs).text
         # path of downloaded music
