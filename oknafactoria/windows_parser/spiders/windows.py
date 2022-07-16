@@ -14,4 +14,7 @@ class WindowsSpider(scrapy.Spider):
     def parse(self, response):
         item = WindowsParserItem()
         item['url'] = response.url
+        item['wind_name'] = response.xpath(
+            '//div[@class="finished-catalog__item-title"]/a/text()'
+        ).getall()
         yield item
