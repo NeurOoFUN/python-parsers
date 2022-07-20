@@ -80,7 +80,7 @@ def download_songs(album_refs=None, album_name=None):
             )
             with open(music_path, 'wb') as file:
                 file.write(download)
-                print(f'Song: №{song_count} / {len(pattern_of_ref)}')
+                print(f'Song: {song_count} / {len(pattern_of_ref)}')
                 song_count += 1
 
     except FileExistsError:
