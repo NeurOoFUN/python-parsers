@@ -1,6 +1,7 @@
+import time
+
 from scrapy import signals
 from scrapy.http import HtmlResponse
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -26,11 +27,21 @@ class SeleniumDownloaderMiddleware:
     def process_request(self, request, spider):
         try:
             self.driver.get(request.url)
+            self.driver.implicitly_wait(10)
+            button = self.driver.find_element(
+                By.CLASS_NAME, 'finished-catalog__more-page-btn'
+            )
+            self.driver.implicitly_wait(10)
+            for i in range(1):
+                button.click()
+                time.sleep(7)
             body = self.driver.page_source
-            return HtmlResponse(url=request.url, body=body, encoding='utf-8', request=request)
+            return HtmlResponse(
+                url=request.url, body=body, encoding='utf-8', request=request
+            )
         finally:
             self.driver.quit()
-            print('CLOSE FUCKING DRIVER!!!!!!!!!!!!!!1')
+            print('Close chrome driver.')
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
@@ -49,7 +60,8 @@ class SeleniumDownloaderMiddleware:
         # - return None: continue processing this exception
         # - return a Response object: stops process_exception() chain
         # - return a Request object: stops process_exception() chain
-        pass
+        if request.Exception(ConnectionRefusedError):
+            return None
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)

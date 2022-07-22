@@ -48,7 +48,9 @@ DOWNLOAD_DELAY = 0.5
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   'windows_parser.middlewares.SeleniumDownloaderMiddleware': 543,
+    # 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    # 'windows_parser.middlewares.MiddlewareRandomUseragent': 299,
+    'windows_parser.middlewares.SeleniumDownloaderMiddleware': 300,
 }
 #
 # Enable or disable extensions
