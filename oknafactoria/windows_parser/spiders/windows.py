@@ -22,7 +22,7 @@ class WindowsSpider(scrapy.Spider):
 
     def parse(self, response):
         item = WindowsParserItem()
-        item['windowd_name'] = response.xpath(
+        item['window_name'] = response.xpath(
             '//div[@class="head__title h3"]/h1/text()'
-        )
+        ).get()
         yield item
