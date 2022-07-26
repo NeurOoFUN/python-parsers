@@ -2,6 +2,12 @@
 __pycache__/
 *.py[cod]
 
+# Personal data
+.env
+
+# Trash
+*.csv
+
 # C extensions
 *.so
 
