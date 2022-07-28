@@ -21,7 +21,11 @@ class Save_to_csv:
         self.files[spider] = file
         self.exporter = CsvItemExporter(file)
         self.exporter.fields_to_export = [
-            'window_name',
+            'url',
+            'product_name',
+            'characteristics',
+            'new_and_old_prices',
+            'description'
         ]
         self.exporter.start_exporting()
 

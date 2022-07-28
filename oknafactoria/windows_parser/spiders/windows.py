@@ -1,4 +1,5 @@
 import scrapy
+from scrapy.loader import ItemLoader
 
 from windows_parser.items import WindowsParserItem
 
@@ -6,7 +7,7 @@ from windows_parser.items import WindowsParserItem
 class WindowsSpider(scrapy.Spider):
     start_urls = []
     name = 'windows'
-    for number_page in range(21, 28):
+    for number_page in range(1, 23):
         start_urls.append(
             f'https://oknafactoria.ru/gotovie-okna/page/{str(number_page)}/'
         )
@@ -26,8 +27,22 @@ class WindowsSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        item = WindowsParserItem()
-        item['window_name'] = response.xpath(
+        i = ItemLoader(item=WindowsParserItem(), response=response)
+        i.add_value('url', response.url)
+        i.add_xpath(
+            'product_name',
             '//div[@class="head__title h3"]/h1/text()'
-        ).get()
-        yield item
+        )
+        i.add_xpath(
+            'characteristics',
+            '//div[@class="data__list"]//text()'
+        )
+        i.add_xpath(
+            'new_and_old_prices',
+            '//div[@class="price__count"]/var/text()'
+        )
+        i.add_xpath(
+            'description',
+            '//div[@class="finished-catalog__text t4 c-gray-l"]//text()'
+        )
+        yield i.load_item()
