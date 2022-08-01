@@ -20,3 +20,9 @@ DOWNLOAD_DELAY = 0.5
 ITEM_PIPELINES = {
    'windows_parser.pipelines.Save_to_csv': 300,
 }
+
+FEED_EXPORTERS = {
+    'xlsx': 'scrapy_xlsx.XlsxItemExporter',
+}
+
+XLSX_FILE = 'data.xlsx'
