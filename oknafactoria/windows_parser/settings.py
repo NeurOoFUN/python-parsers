@@ -21,8 +21,7 @@ ITEM_PIPELINES = {
    'windows_parser.pipelines.Save_to_csv': 300,
 }
 
+# If need data in XLSX format, run command "scrapy crawl windows -o data.xlsx"
 FEED_EXPORTERS = {
     'xlsx': 'scrapy_xlsx.XlsxItemExporter',
 }
-
-XLSX_FILE = 'data.xlsx'
