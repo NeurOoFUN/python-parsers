@@ -18,10 +18,6 @@ CONCURRENT_REQUESTS = 16
 DOWNLOAD_DELAY = 0.5
 
 ITEM_PIPELINES = {
-   'windows_parser.pipelines.Save_to_csv': 300,
-}
-
-# If need data in XLSX format, run command "scrapy crawl windows -o data.xlsx"
-FEED_EXPORTERS = {
-    'xlsx': 'scrapy_xlsx.XlsxItemExporter',
+   'windows_parser.pipelines.SaveToCsvPipeline': 300,
+   'windows_parser.pipelines.SaveToXlsxPipeline': 300,
 }
