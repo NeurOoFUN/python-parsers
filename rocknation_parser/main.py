@@ -75,8 +75,12 @@ def download_songs(album_refs=None, album_name=None):
         # download songs.
         for i in pattern_of_ref:
             download = session.get(url=i).content
+            # Get song name from song link.
+            pattern_of_name = re.findall(r'\d\.(.+)\.mp3', i)[0]
+            # Washing song name.
+            song_name = re.sub(r'[^a-zA-Z]', ' ', pattern_of_name)
             music_path = os.path.normcase(
-                f'{group_name}/{album_name}/{song_count}.mp3'
+                f'{group_name}/{album_name}/{song_count}. {song_name}.mp3'
             )
             with open(music_path, 'wb') as file:
                 file.write(download)
