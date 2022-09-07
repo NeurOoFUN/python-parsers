@@ -4,11 +4,12 @@ import time
 
 from bs4 import BeautifulSoup
 
-from info import INFO
+# from info import INFO
 from tools import session
+from database.getting_data_for_db import find_all_groups
 
-print(INFO)
-
+# print(INFO)
+find_all_groups()
 group_name = input('Enter folder name for save downloaded music: ')
 
 if not os.path.exists(group_name):
@@ -78,13 +79,15 @@ def download_songs(album_refs=None, album_name=None):
             # Get song name from song link.
             pattern_of_name = re.findall(r'\d\.(.+)\.mp3', i)[0]
             # Washing song name.
-            song_name = re.sub(r'[^a-zA-Z]', ' ', pattern_of_name)
+            song_name = re.sub(r'[\d %]', r'', pattern_of_name)
             music_path = os.path.normcase(
                 f'{group_name}/{album_name}/{song_count}. {song_name}.mp3'
             )
             with open(music_path, 'wb') as file:
                 file.write(download)
-                print(f'Song: {song_count} / {len(pattern_of_ref)}')
+                print(
+                    f'Song: {song_name} {song_count} / {len(pattern_of_ref)}'
+                )
                 song_count += 1
 
     except FileExistsError:
