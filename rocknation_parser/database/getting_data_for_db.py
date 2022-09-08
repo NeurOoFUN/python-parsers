@@ -24,7 +24,8 @@ def find_all_groups():
                 link = 'https://rocknation.su' + \
                     i.find('td').find('a').get('href')
                 name = i.find('td').find('a').get_text()
-                print(name)
+                genre = i.find_all('td')[1].get_text()
+                db.write_group_name(name, link, genre)
 
             except AttributeError:
                 continue
