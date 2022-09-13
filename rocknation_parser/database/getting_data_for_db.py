@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from tools import session
-from database.sql_base import SqliteBase
+from database.sql_base import create_db, write_all_data_to_db
 
 
 def pagenation_count():
@@ -13,7 +13,7 @@ def pagenation_count():
 
 
 def find_all_groups():
-    db = SqliteBase()
+    create_db()
     for i in range(1, pagenation_count()):
         response = session.get(url='https://rocknation.su/mp3/' + str(i)).text
         soup = BeautifulSoup(response, 'lxml')
@@ -25,7 +25,7 @@ def find_all_groups():
                     i.find('td').find('a').get('href')
                 name = i.find('td').find('a').get_text()
                 genre = i.find_all('td')[1].get_text()
-                db.write_group_name(name, link, genre)
+                write_all_data_to_db(name, link, genre)
 
             except AttributeError:
                 continue

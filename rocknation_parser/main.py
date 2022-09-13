@@ -6,16 +6,17 @@ from bs4 import BeautifulSoup
 
 # from info import INFO
 from tools import session
-from database.getting_data_for_db import find_all_groups
+from database import find_all_groups, show_all_groupnames, group_selection
 
 # print(INFO)
-find_all_groups()
-group_name = input('Enter folder name for save downloaded music: ')
+# find_all_groups()
+show_all_groupnames()
+group_name = input('Enter group name: ')
 
 if not os.path.exists(group_name):
     os.mkdir(group_name)
 
-input_group_ref = input('Enter reference on group page: ')
+link_to_selected_group = group_selection(group_name)
 
 answer = (input('Need download LIVE albums?  (enter yes / no) ')).lower()
 
@@ -30,7 +31,9 @@ def main():
     try:
         for page_count in range(1, 10):  # pagenation.
             album_count = 1
-            response = session.get(input_group_ref + f'/{str(page_count)}')
+            response = session.get(
+                link_to_selected_group + f'/{str(page_count)}'
+            )
             soup = BeautifulSoup(response.text, 'lxml')
             # 'li' tags with album links, and album names.
             album_data = soup.find('div', id='clips') \
