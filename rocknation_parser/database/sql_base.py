@@ -34,6 +34,7 @@ def show_all_groupnames():
         ).fetchall()
         for i in print_all_data:
             print(i)
+        db.commit()
 
 
 def group_selection(choice_of_user):
@@ -45,4 +46,5 @@ def group_selection(choice_of_user):
             """,
             (choice_of_user,)
         ).fetchone()
+        db.commit()
         return user_selected_group[0]

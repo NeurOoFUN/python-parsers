@@ -4,26 +4,11 @@ import time
 
 from bs4 import BeautifulSoup
 
-# from info import INFO
 from tools import session
 from database import find_all_groups, show_all_groupnames, group_selection
 
-# print(INFO)
-# find_all_groups()
-show_all_groupnames()
-group_name = input('Enter group name: ')
 
-if not os.path.exists(group_name):
-    os.mkdir(group_name)
-
-link_to_selected_group = group_selection(group_name)
-
-answer = (input('Need download LIVE albums?  (enter yes / no) ')).lower()
-
-print('OK, Start parsing music...')
-
-
-def main():
+def parse():
     """
     This triggered function.
     Get all album links and names.
@@ -32,7 +17,7 @@ def main():
         for page_count in range(1, 10):  # pagenation.
             album_count = 1
             response = session.get(
-                link_to_selected_group + f'/{str(page_count)}'
+                LINK_TO_SELECTED_GROUP + f'/{str(page_count)}'
             )
             soup = BeautifulSoup(response.text, 'lxml')
             # 'li' tags with album links, and album names.
@@ -43,7 +28,7 @@ def main():
                 album_refs = 'http://rocknation.su' + li.find('a').get('href')
                 album_name = li.get_text()
 
-                if answer == 'no' and re.search(r'(?i)\blive\b', album_name):
+                if ANSWER == 'no' and re.search(r'(?i)\blive\b', album_name):
                     continue
                 print(
                     f'Page: {page_count}, ' +
@@ -58,7 +43,7 @@ def main():
     except ConnectionResetError:
         print('ConnectionResetError, Trying reconnect...')
         time.sleep(5)
-        main()
+        parse()
 
 
 def download_songs(album_refs=None, album_name=None):
@@ -68,7 +53,7 @@ def download_songs(album_refs=None, album_name=None):
     try:
         response = session.get(url=album_refs).text
         # path of downloaded music
-        os.mkdir(os.path.normpath(f'{group_name}/{album_name}'))
+        os.mkdir(os.path.normpath(f'{GROUP_NAME}/{album_name}'))
         # regex, parse links from JS.
         pattern_of_ref = re.findall(
             r'http://rocknation\.su/upload/mp3/.+?\.mp3',
@@ -84,7 +69,7 @@ def download_songs(album_refs=None, album_name=None):
             # Washing song name.
             song_name = re.sub(r'[\d %]', r'', pattern_of_name)
             music_path = os.path.normcase(
-                f'{group_name}/{album_name}/{song_count}. {song_name}.mp3'
+                f'{GROUP_NAME}/{album_name}/{song_count}. {song_name}.mp3'
             )
             with open(music_path, 'wb') as file:
                 file.write(download)
@@ -98,5 +83,21 @@ def download_songs(album_refs=None, album_name=None):
 
 
 if __name__ == '__main__':
-    main()
+    # find_all_groups()
+
+    show_all_groupnames()
+
+    GROUP_NAME = input('Enter group name: ')
+
+    if not os.path.exists(GROUP_NAME):
+        os.mkdir(GROUP_NAME)
+
+    LINK_TO_SELECTED_GROUP = group_selection(GROUP_NAME)
+
+    ANSWER = (input('Need download LIVE albums?  (enter yes / no) ')).lower()
+
+    print('OK, Start parsing music...')
+
+    parse()
+
     input('END.\nEnter any key for exit.')
