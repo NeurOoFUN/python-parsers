@@ -66,7 +66,7 @@ def download_songs(album_refs=None, album_name=None):
             download = session.get(url=i).content
             # Get song name from song link.
             pattern_of_name = re.findall(r'\d\.(.+)\.mp3', i)[0]
-            # Washing song name.
+            # Cleaning song name.
             song_name = re.sub(r'[\d %]', r'', pattern_of_name)
             music_path = os.path.normcase(
                 f'{GROUP_NAME}/{album_name}/{song_count}. {song_name}.mp3'
@@ -83,6 +83,7 @@ def download_songs(album_refs=None, album_name=None):
 
 
 if __name__ == '__main__':
+    # uncomment find_all_groups() if data base not exist (music.db)
     # find_all_groups()
 
     show_all_groupnames()
