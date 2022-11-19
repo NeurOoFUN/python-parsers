@@ -33,7 +33,7 @@ def show_all_groupnames():
             """
         ).fetchall()
         for i in print_all_data:
-            print(i)
+            print(*i)
         db.commit()
 
 
