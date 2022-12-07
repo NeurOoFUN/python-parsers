@@ -13,7 +13,7 @@ class Saver():
         if not os.path.exists('datas'):
             os.mkdir('datas')
 
-    def create_csv_table(self, csv_headers: tuple):
+    def create_csv_table(self, csv_headers: tuple) -> None:
         """
         Created .csv file with headers.
         :params csv_headers: header tuple.
@@ -23,7 +23,7 @@ class Saver():
                 file, dialect='excel', quoting=csv.QUOTE_MINIMAL)
             writer.writerow(csv_headers)
 
-    def save_to_csv(self, fields: tuple):
+    def save_to_csv(self, fields: tuple) -> None:
         """
         To the file previously created by the method "create_csv_table"
         saved fields with collected datas.
@@ -34,7 +34,7 @@ class Saver():
                 file, dialect='excel', quoting=csv.QUOTE_MINIMAL)
             writer.writerow(fields)
 
-    def save_to_json(self, fields: dict):
+    def save_to_json(self, fields: dict) -> None:
         """
         Saved datas from json format.
         :params fields: dict. explame "{'name': datas}"

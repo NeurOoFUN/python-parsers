@@ -13,7 +13,7 @@ def create_db():
         db.commit()
 
 
-def write_all_data_to_db(group_name, group_link, genre):
+def write_all_data_to_db(group_name: str, group_link: str, genre: str):
     with sqlite3.connect('database/music.db') as db:
         cursor = db.cursor()
         cursor.execute(
@@ -37,7 +37,7 @@ def show_all_groupnames():
         db.commit()
 
 
-def group_selection(choice_of_user):
+def group_selection(choice_of_user: str) -> str:
     with sqlite3.connect('database/music.db') as db:
         cursor = db.cursor()
         user_selected_group = cursor.execute(

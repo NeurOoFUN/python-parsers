@@ -46,3 +46,4 @@ class WindowsSpider(scrapy.Spider):
             '//div[@class="finished-catalog__text t4 c-gray-l"]//text()'
         )
         yield i.load_item()
+
