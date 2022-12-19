@@ -3,6 +3,7 @@ import time
 from fake_useragent import UserAgent
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup
 
 import requests
 
@@ -28,18 +29,18 @@ class SeleniumParser:
         self.options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self.options.add_argument('--headless')
         self.options.add_argument('--disable-blink-features=AutomationControlled')
-        self.DRIVER = webdriver.Chrome(
+        self.current_session = webdriver.Chrome(
                 executable_path='/home/neuroo/projects/python-parsers/ati_su/chromedriver',
                 options=self.options
-
                 )
 
-    def parse_page(self, url: str, sleep: int) -> str:
-        self.DRIVER.get(url)
-        self.DRIVER.find_element(By.TAG_NAME, 'html')
-        time.sleep(sleep)
-        page = self.DRIVER.page_source
-        self.DRIVER.close()
 
+    def parse_page(self, url: str, sleep: int) -> str:
+        self.current_session.get(url)
+        self.current_session.find_element(By.TAG_NAME, 'html')
+        time.sleep(sleep)
+        page = self.current_session.page_source
+        self.current_session.close()
         return page
+
 
