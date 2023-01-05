@@ -3,22 +3,10 @@ import time
 from fake_useragent import UserAgent
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
 
-import requests
-
-
-
-# this request sessin.
-session = requests.Session()
 
 # fake user-agent
 agent = UserAgent()
-
-session.headers = {
-        'user-agent': f'{agent}',
-        'accept': '*/*'
-        }
 
 
 # selenium driver settings.
@@ -34,13 +22,15 @@ class SeleniumParser:
                 options=self.options
                 )
 
-
     def parse_page(self, url: str, sleep: int) -> str:
         self.current_session.get(url)
         self.current_session.find_element(By.TAG_NAME, 'html')
+
         time.sleep(sleep)
         page = self.current_session.page_source
+        
         self.current_session.close()
+        
         return page
 
 
