@@ -1,4 +1,5 @@
 import time
+from dataclasses import dataclass
 
 from fake_useragent import UserAgent
 from selenium import webdriver
@@ -7,6 +8,22 @@ from selenium.webdriver.common.by import By
 
 # fake user-agent
 agent = UserAgent()
+
+
+@dataclass
+class DataClass:
+    rating: str = ''
+    registration_data: str = ''
+    number_of_participants: str = ''
+    number_of_mentions: str = ''
+    number_of_recommendations:str = ''
+    name: str = ''
+    code: str = ''
+    inn: str = ''
+    profile: str = ''
+    country: str = ''
+    city: str = ''
+    address:str = ''
 
 
 # selenium driver settings.
