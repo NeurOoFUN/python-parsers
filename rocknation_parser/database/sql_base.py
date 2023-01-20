@@ -5,9 +5,11 @@ def create_db():
     with sqlite3.connect('database/music.db') as db:
         cursor = db.cursor()
         create_table = """
-            CREATE TABLE IF NOT EXISTS music(id INTEGER PRIMARY KEY,
-            group_name TEXT,
-            group_link TEXT, genre TEXT)
+            CREATE TABLE IF NOT EXISTS music(
+                id INTEGER PRIMARY KEY,
+                group_name TEXT,
+                group_link TEXT, genre TEXT
+            )
         """
         cursor.execute(create_table)
         db.commit()
@@ -18,7 +20,8 @@ def write_all_data_to_db(group_name: str, group_link: str, genre: str):
         cursor = db.cursor()
         cursor.execute(
             """INSERT INTO music(group_name, group_link, genre)
-            VALUES(?, ?, ?)""",
+               VALUES(?, ?, ?)
+            """,
             (group_name, group_link, genre)
             )
         db.commit()

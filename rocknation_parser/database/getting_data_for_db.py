@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from tools import session
 from database.sql_base import create_db, write_all_data_to_db
 
+__all__ = ['find_all_groups']
+
 
 def pagenation_count() -> int:
     response = session.get(url='https://rocknation.su/mp3/').text

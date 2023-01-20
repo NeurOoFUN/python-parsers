@@ -1,2 +1,2 @@
-from . getting_data_for_db import find_all_groups
+from . getting_data_for_db import *
 from . sql_base import *
