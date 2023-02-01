@@ -1,6 +1,6 @@
-from parser import get_start_links
+from parser import main
 
 
 if __name__ == '__main__':
-    get_start_links()
+    main()
 

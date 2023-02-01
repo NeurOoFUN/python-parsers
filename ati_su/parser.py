@@ -11,13 +11,20 @@ data_container = DataClass()
 
 save = Saver(csv_headers=data_container.__match_args__)
 
-URL = 'https://ati.su/rating/?skip=0&take=300'
+
+def main() -> None:
+    '''
+    Start and pagenation.
+    '''
+    for page in range(0, 100000, 300):
+        url = f'https://ati.su/rating/?skip={str(page)}&take=300'
+        get_start_links(url=url)
 
 
-def get_start_links():
+def get_start_links(url: str) -> None:
     local_selenium_session = SeleniumParser()
     soup = BeautifulSoup(
-        local_selenium_session.parse_page(url=URL, sleep=5), 'lxml'
+        local_selenium_session.parse_page(url=url, sleep=5), 'lxml'
             )
 
     link_list = soup.find_all('a', class_='glz-link glz-is-primary')
@@ -34,7 +41,7 @@ def parse_rating_tab(link: str) -> None:
     local_selenium_session = SeleniumParser()
 
     soup = BeautifulSoup(
-            local_selenium_session.parse_page('http:' + link, sleep=2), 'lxml'
+            local_selenium_session.parse_page('http:' + link, sleep=3), 'lxml'
             )
     content_block1 = soup.find_all(
             'div', class_='passport-points-section-container__2X80'
@@ -72,7 +79,7 @@ def parse_main_tab(link: str) -> None:
     data_container.name = content_block[0].get_text()
     data_container.code = content_block[1].get_text()
     data_container.inn = content_block[2].get_text()
-    # data_container.profile = content_block[5].get_text()  # TODO need to find an information about the profile field
+    data_container.profile = content_block[4].get_text()
     data_container.country = content_block[5].get_text()
     data_container.city = content_block[6].get_text()
 

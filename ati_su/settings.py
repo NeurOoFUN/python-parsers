@@ -32,7 +32,7 @@ class SeleniumParser:
         self.options = webdriver.ChromeOptions()
         self.options.add_argument(f'user-agent={agent}')
         self.options.add_experimental_option("excludeSwitches", ["enable-logging"])
-        self.options.add_argument('--headless')
+        # self.options.add_argument('--headless')
         self.options.add_argument('--disable-blink-features=AutomationControlled')
         self.current_session = webdriver.Chrome(
                 executable_path='/home/neuroo/projects/python-parsers/ati_su/chromedriver',
