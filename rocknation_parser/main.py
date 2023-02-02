@@ -1,22 +1,25 @@
 import os
 import time
 
-from database import show_all_groupnames, group_selection, find_all_groups
+from database import MusicDbManager, find_all_groups
 from parser import parse
+
+
+music_manager_instance = MusicDbManager()
 
 
 if __name__ == '__main__':
     # uncomment find_all_groups() if data base not exist (music.db)
-    # find_all_groups()
+    find_all_groups()
 
-    show_all_groupnames()
+    music_manager_instance.show_all_groupnames()
 
     GROUP_NAME = input('Enter group name: ')
 
     if not os.path.exists(GROUP_NAME):
         os.mkdir(GROUP_NAME)
 
-    LINK_TO_SELECTED_GROUP = group_selection(GROUP_NAME)
+    LINK_TO_SELECTED_GROUP = music_manager_instance.group_selection(GROUP_NAME)
 
     ANSWER = (input('Do you need LIVE albums?  (enter yes / no) ')).lower()
 

@@ -1,9 +1,11 @@
 from bs4 import BeautifulSoup
 
 from tools import session
-from database.sql_base import create_db, write_all_data_to_db
+from database.sql_base import MusicDbManager
 
 __all__ = ['find_all_groups']
+
+music_manager_instance = MusicDbManager()
 
 
 def pagenation_count() -> int:
@@ -15,21 +17,23 @@ def pagenation_count() -> int:
 
 
 def find_all_groups() -> None:
-    create_db()
+    music_manager_instance.create_db()
     for i in range(1, pagenation_count()):
         response = session.get(url='https://rocknation.su/mp3/' + str(i)).text
         soup = BeautifulSoup(response, 'lxml')
-        group_link = soup.find('table', class_='table-bands').find('tbody')
+        tr_list = soup.find('table', class_='table-bands').find('tbody').find_all('tr')
 
-        for i in group_link:
+        for l in tr_list:
             try:
+                name = l.find('td').find('a').get_text()
                 link = 'https://rocknation.su' + \
-                    i.find('td').find('a').get('href')
-                name = i.find('td').find('a').get_text()
-                genre = i.find_all('td')[1].get_text()
-                write_all_data_to_db(
-                    group_name=name, group_link=link, genre=genre
+                    l.find('td').find('a').get('href')
+                genre = l.find_all('td')[1].get_text()
+
+                music_manager_instance.write_all_data_to_db(
+                        group_name=name, group_link=link, genre=genre
                         )
 
             except AttributeError:
                 continue
+
