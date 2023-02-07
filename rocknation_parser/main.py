@@ -10,7 +10,7 @@ music_manager_instance = MusicDbManager()
 
 if __name__ == '__main__':
     # uncomment find_all_groups() if data base not exist (music.db)
-    find_all_groups()
+    # find_all_groups()
 
     music_manager_instance.show_all_groupnames()
 
