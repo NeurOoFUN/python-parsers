@@ -3,7 +3,7 @@ import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from database import MusicDbManager
-from parser import parse
+from parser import Parser
 
 
 class Ui_MainWindow:
@@ -12,19 +12,21 @@ class Ui_MainWindow:
         MainWindow.resize(895, 714)
 
         self.db_instance = MusicDbManager()
+        self.parser = Parser()
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
         self.music_list = QtWidgets.QListWidget(self.centralwidget)
-        self.music_list.setGeometry(QtCore.QRect(0, 0, 280, 711))
+        self.music_list.setGeometry(QtCore.QRect(0, 0, 300, 711))
         self.music_list.setObjectName("music_list")
         self.music_list.addItems(self.db_instance.show_all_groupnames())
-        self.music_list.itemClicked.connect(self.get_group_name_from_db)
+        self.music_list.itemClicked.connect(self.parser_lounch)
 
-        self.log_list = QtWidgets.QListView(self.centralwidget)
-        self.log_list.setGeometry(QtCore.QRect(310, 0, 571, 711))
-        self.log_list.setObjectName("log_list")
+        # self.log_list = QtWidgets.QListWidget(self.centralwidget)
+        # self.log_list.setGeometry(QtCore.QRect(310, 0, 571, 711))
+        # self.log_list.setObjectName("log_list")
+        # self.log_list.addItems(data_list)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -35,13 +37,16 @@ class Ui_MainWindow:
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
 
-    def get_group_name_from_db(self, item):
+    def parser_lounch(self, item):
         selected_group = self.db_instance.group_selection(item.text())
 
         if not os.path.exists(item.text()):
             os.mkdir(item.text())
 
-        parse(LINK_TO_SELECTED_GROUP=selected_group, ANSWER='no', GROUP_NAME=item.text())
+        self.parser.link_to_selected_group = selected_group
+        # self.parser.answer = selected_group
+        self.parser.group_name = item.text()
+        self.parser.parse()
 
 
 if __name__ == "__main__":
@@ -54,6 +59,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
 
     MainWindow.show()
-
 
     sys.exit(app.exec_())
