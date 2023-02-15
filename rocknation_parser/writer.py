@@ -39,9 +39,9 @@ def music_recording(
         music_path = os.path.normcase(
             f'{GROUP_NAME}/{album_name}/{song_count}. {song_name}.mp3'
         )
-        with open(music_path, 'wb') as file:
-            file.write(download)
-            print(
-                f'Song: {song_name} {song_count} / {len(pattern_of_ref)}'
-            )
+        # with open(music_path, 'wb') as file:
+            # file.write(download)
+        print(
+            f'Song: {song_name} {song_count} / {len(pattern_of_ref)}'
+        )
 
