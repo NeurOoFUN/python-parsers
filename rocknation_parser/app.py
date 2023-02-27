@@ -30,10 +30,9 @@ class Ui_MainWindow(QMainWindow):
         self.music_list.addItems(self.db_instance.show_all_groupnames())
         self.music_list.itemClicked.connect(self.parser_lounch)
         
-        self.log_list = QtWidgets.QLabel(self)
-        self.log_list.setGeometry(QtCore.QRect(310, 0, 571, 711))
-        self.log_list.setObjectName("log_list")
-        self.log_list.setText('some text')
+        # self.log_list = QtWidgets.QLabel(self)
+        # self.log_list.setGeometry(QtCore.QRect(310, 0, 571, 711))
+        # self.log_list.setObjectName("log_list")
 
     def parser_lounch(self, item):
         selected_group = self.db_instance.group_selection(item.text())
@@ -45,7 +44,7 @@ class Ui_MainWindow(QMainWindow):
         # self.parser.answer = selected_group
         self.parser.group_name = item.text()
         self.parser.parse()
-    
+
 
 if __name__ == "__main__":
     import sys
