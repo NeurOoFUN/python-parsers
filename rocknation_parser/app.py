@@ -1,7 +1,7 @@
 import os
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from database import MusicDbManager
 from parser import Parser
@@ -30,9 +30,9 @@ class Ui_MainWindow(QMainWindow):
         self.music_list.addItems(self.db_instance.show_all_groupnames())
         self.music_list.itemClicked.connect(self.parser_lounch)
         
-        # self.log_list = QtWidgets.QLabel(self)
-        # self.log_list.setGeometry(QtCore.QRect(310, 0, 571, 711))
-        # self.log_list.setObjectName("log_list")
+        self.downdoad_log = QtWidgets.QLabel(self)
+        self.downdoad_log.setGeometry(QtCore.QRect(310, 0, 571, 711))
+        self.downdoad_log.setObjectName("downdoad_log")
 
     def parser_lounch(self, item):
         selected_group = self.db_instance.group_selection(item.text())
@@ -40,10 +40,22 @@ class Ui_MainWindow(QMainWindow):
         if not os.path.exists(item.text()):
             os.mkdir(item.text())
 
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle(' ')
+        msg_box.setText('Do you need live albums?')
+        msg_box.setIcon(QMessageBox.Information)
+        msg_box.addButton(QMessageBox.Yes)
+        msg_box.addButton(QMessageBox.No)
+        msg_box.buttonClicked.connect(self.user_answer)
+
+        msg_box.exec_()
+
         self.parser.link_to_selected_group = selected_group
-        # self.parser.answer = selected_group
         self.parser.group_name = item.text()
-        self.parser.parse()
+        self.parser.parse(self.downdoad_log)
+
+    def user_answer(self, button):
+        self.parser.user_answer = button.text()
 
 
 if __name__ == "__main__":

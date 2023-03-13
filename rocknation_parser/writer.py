@@ -39,8 +39,8 @@ class Saver:
             music_path = os.path.normcase(
                 f'{self.group_name}/{self.album_name}/{song_count}. {song_name}.mp3'
             )
-            with open(music_path, 'wb') as file:
-                file.write(download)
+            # with open(music_path, 'wb') as file:
+                # file.write(download)
             print(
                 f'Song: {song_name} {song_count} / {len(pattern_of_ref)}'
             )

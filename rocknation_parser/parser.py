@@ -1,6 +1,7 @@
 import re
 
 from bs4 import BeautifulSoup
+from PyQt5 import QtWidgets
 
 from tools import session
 from writer import Saver
@@ -11,14 +12,15 @@ class Parser:
 
     This class parses music.
     '''
-    link_to_selected_group = str()
-    answer = str()
-    group_name = str()
-
     def __init__(self):
         self.save = Saver()
 
-    def parse(self):
+        self.link_to_selected_group = str()
+        self.user_answer = str()
+        self.group_name = str()
+        self.download_log = None
+
+    def parse(self, download_log):
         for self.page_count in range(1, 10):  # pagenation.
             album_number = 1
             response = session.get(
@@ -33,12 +35,15 @@ class Parser:
                 self.album_refs = 'http://rocknation.su' + li.find('a').get('href')
                 self.album_name = li.get_text()
 
-                if self.answer == 'no' and re.search(r'(?i)\blive\b', self.album_name):
+                if self.user_answer == '&No' and re.search(r'(?i)\blive\b', self.album_name):
                     continue
-                print(
+
+                download_log.setText(
                     f'Page: {self.page_count}, ' +
                     f'Album: {album_number} / {len(album_data)}'
                 )
+
+                QtWidgets.QApplication.processEvents()
 
                 album_number += 1
 
