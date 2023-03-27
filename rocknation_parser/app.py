@@ -30,9 +30,13 @@ class Ui_MainWindow(QMainWindow):
         self.music_list.addItems(self.db_instance.show_all_groupnames())
         self.music_list.itemClicked.connect(self.parser_lounch)
         
-        self.downdoad_log = QtWidgets.QLabel(self)
-        self.downdoad_log.setGeometry(QtCore.QRect(310, 0, 571, 711))
-        self.downdoad_log.setObjectName("downdoad_log")
+        self.log_from_parser_module = QtWidgets.QLabel(self)
+        self.log_from_parser_module.setGeometry(QtCore.QRect(310, 0, 571, 711))
+        self.log_from_parser_module.setObjectName("log_from_parser_module")
+
+        self.log_from_writer_module = QtWidgets.QLabel(self)
+        self.log_from_writer_module.setGeometry(QtCore.QRect(600, 0, 571, 711))
+        self.log_from_writer_module.setObjectName("log_from_writer_module")
 
     def parser_lounch(self, item):
         selected_group = self.db_instance.group_selection(item.text())
@@ -52,7 +56,7 @@ class Ui_MainWindow(QMainWindow):
 
         self.parser.link_to_selected_group = selected_group
         self.parser.group_name = item.text()
-        self.parser.parse(self.downdoad_log)
+        self.parser.parse(self.log_from_parser_module, self.log_from_writer_module)
 
     def user_answer(self, button):
         self.parser.user_answer = button.text()

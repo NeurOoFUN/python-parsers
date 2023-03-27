@@ -7,20 +7,18 @@ from tools import session
 from writer import Saver
 
 
-class Parser:
+class Parser(Saver):
     '''
 
     This class parses music.
     '''
     def __init__(self):
-        self.save = Saver()
+        super().__init__()
 
         self.link_to_selected_group = str()
         self.user_answer = str()
-        self.group_name = str()
-        self.download_log = None
 
-    def parse(self, download_log):
+    def parse(self, log_from_parser_module, log_from_writer_module):
         for self.page_count in range(1, 10):  # pagenation.
             album_number = 1
             response = session.get(
@@ -38,7 +36,7 @@ class Parser:
                 if self.user_answer == '&No' and re.search(r'(?i)\blive\b', self.album_name):
                     continue
 
-                download_log.setText(
+                log_from_parser_module.setText(
                     f'Page: {self.page_count}, ' +
                     f'Album: {album_number} / {len(album_data)}'
                 )
@@ -47,11 +45,11 @@ class Parser:
 
                 album_number += 1
 
-                self.save.album_refs, self.save.album_name, self.save.group_name = \
+                self.album_refs, self.album_name, self.group_name = \
                         self.album_refs, self.album_name, self.group_name
 
                 try:
-                    self.save.download_songs()
+                    self.download_songs(log_from_writer_module)
 
                 except FileExistsError:
                     print('We have this album, next...')

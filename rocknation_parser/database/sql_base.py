@@ -32,14 +32,13 @@ class MusicDbManager:
             )
 
     def show_all_groupnames(self):
-        names_list = []
-        print_all_data = self._cursor.execute(
+        all_data = self._cursor.execute(
             """
             SELECT group_name FROM music
             """
         ).fetchall()
-        for i in print_all_data:
-            names_list.append(*i)
+
+        names_list = [name for tpl in all_data for name in tpl]
 
         return names_list
 

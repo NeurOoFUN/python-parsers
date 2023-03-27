@@ -1,6 +1,8 @@
 import os
 import re
 
+from PyQt5 import QtWidgets
+
 from tools import session
 
 
@@ -10,7 +12,7 @@ class Saver:
         self.album_name = str()
         self.group_name = str()
 
-    def download_songs(self):
+    def download_songs(self, log_from_writer_module):
         """
         Download and save all albums with .mp3 songs.
         """
@@ -31,17 +33,18 @@ class Saver:
             # Cleaning the name of the song.
             song_name = re.sub(r'[\d %]', r'', pattern_of_name)
 
-            self.music_recording(download, song_count, pattern_of_ref, song_name)
+            self.music_recording(download, song_count, pattern_of_ref, song_name, log_from_writer_module)
 
             song_count += 1
 
-    def music_recording(self, download, song_count, pattern_of_ref, song_name) -> None:
+    def music_recording(self, download, song_count, pattern_of_ref, song_name, log_from_writer_module) -> None:
             music_path = os.path.normcase(
                 f'{self.group_name}/{self.album_name}/{song_count}. {song_name}.mp3'
             )
             # with open(music_path, 'wb') as file:
                 # file.write(download)
-            print(
-                f'Song: {song_name} {song_count} / {len(pattern_of_ref)}'
-            )
+
+            log_from_writer_module.setText(f'Song: {song_name} {song_count} / {len(pattern_of_ref)}')
+
+            QtWidgets.QApplication.processEvents()
 
