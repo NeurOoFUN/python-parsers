@@ -1,6 +1,6 @@
 import os
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from database import MusicDbManager
@@ -31,12 +31,26 @@ class Ui_MainWindow(QMainWindow):
         self.music_list.itemClicked.connect(self.parser_lounch)
         
         self.log_from_parser_module = QtWidgets.QLabel(self)
-        self.log_from_parser_module.setGeometry(QtCore.QRect(310, 0, 571, 711))
+        self.log_from_parser_module.setGeometry(QtCore.QRect(10, 450, 881, 121))
         self.log_from_parser_module.setObjectName("log_from_parser_module")
 
+        font = QtGui.QFont()
+        font.setPointSize(30)
+
+        self.log_from_parser_module.setFont(font)
+        self.log_from_parser_module.setStyleSheet("color: rgb(0, 76, 0);")
+
         self.log_from_writer_module = QtWidgets.QLabel(self)
-        self.log_from_writer_module.setGeometry(QtCore.QRect(600, 0, 571, 711))
+        self.log_from_writer_module.setGeometry(QtCore.QRect(10, 610, 881, 51))
         self.log_from_writer_module.setObjectName("log_from_writer_module")
+        self.log_from_writer_module.setFont(font)
+        self.log_from_writer_module.setStyleSheet("color: rgb(0, 85, 0);")
+
+        self.completion_notice = QtWidgets.QLabel(self)
+        self.completion_notice.setGeometry(QtCore.QRect(400, 610, 881, 51))
+        self.completion_notice.setObjectName("completion_notice")
+        self.completion_notice.setFont(font)
+        self.completion_notice.setStyleSheet("color: rgb(0, 85, 0);")
 
     def parser_lounch(self, item):
         selected_group = self.db_instance.group_selection(item.text())
@@ -51,12 +65,24 @@ class Ui_MainWindow(QMainWindow):
         msg_box.addButton(QMessageBox.Yes)
         msg_box.addButton(QMessageBox.No)
         msg_box.buttonClicked.connect(self.user_answer)
-
         msg_box.exec_()
+
+        self.music_list.hide()
+        self.completion_notice.hide()
+
+        self.log_from_writer_module.show()
+        self.log_from_parser_module.show()
 
         self.parser.link_to_selected_group = selected_group
         self.parser.group_name = item.text()
         self.parser.parse(self.log_from_parser_module, self.log_from_writer_module)
+
+        self.log_from_writer_module.hide()
+        self.log_from_parser_module.hide()
+        self.completion_notice.setText(f'{item.text()} downloaded.')
+
+        self.music_list.show()
+        self.completion_notice.show()
 
     def user_answer(self, button):
         self.parser.user_answer = button.text()
