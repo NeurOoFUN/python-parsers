@@ -4,7 +4,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from database import MusicDbManager
-from parser import Parser
+from data_collection import Parser
 
 
 class Ui_MainWindow(QMainWindow):

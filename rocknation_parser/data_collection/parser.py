@@ -4,7 +4,10 @@ from bs4 import BeautifulSoup
 from PyQt5 import QtWidgets
 
 from tools import session
-from writer import Saver
+from .writer import Saver
+
+
+__all__ = ['Parser']
 
 
 class Parser(Saver):
