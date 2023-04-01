@@ -24,19 +24,22 @@ class Ui_MainWindow(QMainWindow):
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
+        music_list_font = QtGui.QFont()
+        music_list_font.setPointSize(15)
+
         self.music_list = QtWidgets.QListWidget(self)
-        self.music_list.setGeometry(QtCore.QRect(0, 0, 300, 715))
+        self.music_list.setGeometry(QtCore.QRect(0, 0, 900, 715))
         self.music_list.setObjectName("music_list")
+        self.music_list.setFont(music_list_font)
         self.music_list.addItems(self.db_instance.show_all_groupnames())
         self.music_list.itemClicked.connect(self.parser_lounch)
+
+        font = QtGui.QFont()
+        font.setPointSize(30)
         
         self.log_from_parser_module = QtWidgets.QLabel(self)
         self.log_from_parser_module.setGeometry(QtCore.QRect(10, 450, 881, 121))
         self.log_from_parser_module.setObjectName("log_from_parser_module")
-
-        font = QtGui.QFont()
-        font.setPointSize(30)
-
         self.log_from_parser_module.setFont(font)
         self.log_from_parser_module.setStyleSheet("color: rgb(0, 76, 0);")
 
@@ -79,7 +82,7 @@ class Ui_MainWindow(QMainWindow):
 
         self.log_from_writer_module.hide()
         self.log_from_parser_module.hide()
-        self.completion_notice.setText(f'{item.text()} downloaded.')
+        self.completion_notice.setText(f'"{item.text()}" downloaded.')
 
         self.music_list.show()
         self.completion_notice.show()
