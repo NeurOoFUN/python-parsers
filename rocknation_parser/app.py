@@ -34,26 +34,9 @@ class Ui_MainWindow(QMainWindow):
         self.music_list.addItems(self.db_instance.show_all_groupnames())
         self.music_list.itemClicked.connect(self.parser_lounch)
 
-        font = QtGui.QFont()
-        font.setPointSize(30)
-        
-        self.log_from_parser_module = QtWidgets.QLabel(self)
-        self.log_from_parser_module.setGeometry(QtCore.QRect(10, 450, 881, 121))
-        self.log_from_parser_module.setObjectName("log_from_parser_module")
-        self.log_from_parser_module.setFont(font)
-        self.log_from_parser_module.setStyleSheet("color: rgb(0, 76, 0);")
-
-        self.log_from_writer_module = QtWidgets.QLabel(self)
-        self.log_from_writer_module.setGeometry(QtCore.QRect(10, 610, 881, 51))
-        self.log_from_writer_module.setObjectName("log_from_writer_module")
-        self.log_from_writer_module.setFont(font)
-        self.log_from_writer_module.setStyleSheet("color: rgb(0, 85, 0);")
-
-        self.completion_notice = QtWidgets.QLabel(self)
-        self.completion_notice.setGeometry(QtCore.QRect(400, 610, 881, 51))
-        self.completion_notice.setObjectName("completion_notice")
-        self.completion_notice.setFont(font)
-        self.completion_notice.setStyleSheet("color: rgb(0, 85, 0);")
+        self.log_from_parser_module = self.log_label((10, 450, 881, 121), 'log_from_parser_module')
+        self.log_from_writer_module = self.log_label((10, 610, 881, 51), 'log_from_writer_module')
+        self.completion_notice = self.log_label((400, 610, 881, 51), 'completion_notice')
 
     def parser_lounch(self, item):
         selected_group = self.db_instance.group_selection(item.text())
@@ -89,6 +72,18 @@ class Ui_MainWindow(QMainWindow):
 
     def user_answer(self, button):
         self.parser.user_answer = button.text()
+
+    def log_label(self, geomettry: tuple, obj_name: str):
+        font = QtGui.QFont()
+        font.setPointSize(30)
+        
+        self.log = QtWidgets.QLabel(self)
+        self.log.setGeometry(QtCore.QRect(*geomettry))
+        self.log.setObjectName(obj_name)
+        self.log.setFont(font)
+        self.log.setStyleSheet("color: rgb(0, 76, 0);")
+        return self.log
+
 
 
 if __name__ == "__main__":
